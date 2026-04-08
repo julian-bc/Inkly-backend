@@ -25,8 +25,7 @@ public class UserServiceApplication {
 
 			if (jpaRepository.count() == 0) {
 				jpaRepository.save(new RoleEntity(1, "ADMIN"));
-				jpaRepository.save(new RoleEntity(2, "WRITER"));
-				jpaRepository.save(new RoleEntity(3, "USER"));
+				jpaRepository.save(new RoleEntity(2, "USER"));
 				log.info("¡Base de datos inicializada con {} roles!", jpaRepository.count());
 			} else {
 				log.info("Roles ya existentes, no se insertan nuevamente.");
