@@ -1,15 +1,14 @@
 package top.inkly.user_service.application.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import top.inkly.shared.domain.MetaData;
 import top.inkly.shared.domain.PageResponse;
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.shared.domain.PaginationResult;
+import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
 import top.inkly.user_service.domain.exceptions.UserNotFoundException;
+import top.inkly.user_service.domain.models.Role;
 import top.inkly.user_service.domain.models.User;
 import top.inkly.user_service.domain.repositories.UserRepository;
 
@@ -20,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository repository;
+    private final IRoleService roleService;
 
     public PageResponse<User> findUsers(PaginationRequest request) {
         PaginationResult<User> pagination = repository.findAll(request);
@@ -33,15 +33,18 @@ public class UserService implements IUserService {
     @Override
     public User findUser(UUID userId) {
         return repository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Usuario con " + userId + " no encontrado!"));
+                .orElseThrow(() -> new UserNotFoundException("Usuario con id " + userId + " no encontrado!"));
     }
 
     @Override
     public void createUser(User user) {
+        Role userRole = roleService.findRole(2);
+
         user.setCreatedAt(LocalDateTime.now());
         user.setEmailVerified(false);
         user.setPasswordVerified(true);
         user.setEnable(true);
+        user.setRole(userRole);
         repository.save(user);
     }
 
