@@ -2,12 +2,13 @@ package top.inkly.user_service.application.services;
 
 import top.inkly.shared.domain.PageResponse;
 import top.inkly.shared.domain.PaginationRequest;
+import top.inkly.user_service.application.services.filters.UserFilters;
 import top.inkly.user_service.domain.models.User;
 
 import java.util.UUID;
 
 public interface IUserService {
-    PageResponse<User> findUsers(PaginationRequest request);
+    PageResponse<User> findUsers(PaginationRequest request, UserFilters filters);
     User findUser(UUID userId);
     void createUser(User user);
     void updateUser(UUID userId, User userUpdated);

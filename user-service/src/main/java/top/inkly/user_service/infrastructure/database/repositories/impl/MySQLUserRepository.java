@@ -7,11 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.shared.domain.PaginationResult;
+import top.inkly.user_service.application.services.filters.UserFilters;
 import top.inkly.user_service.domain.models.User;
 import top.inkly.user_service.domain.repositories.UserRepository;
 import top.inkly.user_service.infrastructure.database.entities.UserEntity;
 import top.inkly.user_service.infrastructure.database.mapper.UserMapperInfra;
 import top.inkly.user_service.infrastructure.database.repositories.UserJpaRepository;
+import top.inkly.user_service.infrastructure.database.specification.UserSpecification;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +26,13 @@ public class MySQLUserRepository implements UserRepository {
     private final UserMapperInfra mapper;
 
     @Override
-    public PaginationResult<User> findAll(PaginationRequest request) {
+    public PaginationResult<User> findAll(PaginationRequest request, UserFilters filters) {
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize()
         );
 
-        Page<UserEntity> page = jpaRepository.findAll(pageable);
+        Page<UserEntity> page = jpaRepository.findAll(UserSpecification.withFilters(filters), pageable);
 
         List<User> users = mapper.toDomain(page.getContent());
 

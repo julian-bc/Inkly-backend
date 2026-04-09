@@ -7,6 +7,7 @@ import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.shared.domain.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
+import top.inkly.user_service.application.services.filters.UserFilters;
 import top.inkly.user_service.domain.exceptions.UserNotFoundException;
 import top.inkly.user_service.domain.models.Role;
 import top.inkly.user_service.domain.models.User;
@@ -21,8 +22,8 @@ public class UserService implements IUserService {
     private final UserRepository repository;
     private final IRoleService roleService;
 
-    public PageResponse<User> findUsers(PaginationRequest request) {
-        PaginationResult<User> pagination = repository.findAll(request);
+    public PageResponse<User> findUsers(PaginationRequest request, UserFilters filters) {
+        PaginationResult<User> pagination = repository.findAll(request, filters);
 
         return PageResponse.<User>builder()
                 .data(pagination.getContent())

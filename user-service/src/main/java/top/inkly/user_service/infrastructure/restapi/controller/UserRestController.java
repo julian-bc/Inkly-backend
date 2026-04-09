@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.inkly.shared.domain.PageResponse;
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.user_service.application.services.IUserService;
+import top.inkly.user_service.application.services.filters.UserFilters;
 import top.inkly.user_service.infrastructure.restapi.dtos.CreateUser;
 import top.inkly.user_service.infrastructure.restapi.dtos.PatchUser;
 import top.inkly.user_service.infrastructure.restapi.dtos.UserResponse;
@@ -31,9 +32,17 @@ public class UserRestController {
     @GetMapping
     public PageResponse<UserResponse> getUsers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) Boolean enable
     ) {
-        return mapper.toUserResponse(service.findUsers(new PaginationRequest(page, size)));
+        UserFilters filters = UserFilters.builder()
+                .userName(userName)
+                .email(email)
+                .enable(enable)
+                .build();
+        return mapper.toUserResponse(service.findUsers(new PaginationRequest(page, size), filters));
     }
 
     @GetMapping("/{id}")
