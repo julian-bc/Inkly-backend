@@ -5,7 +5,7 @@ Inkly API es la interfaz que potencia Inkly, una plataforma inspirada en el esti
 
 El repositorio actual contiene los módulos de **usuarios**, **API Gateway**, **notificaciones** y **seguridad**.
 
-El repositorio [Inkly Core](https://github.com/LiangCamilo) corresponde al **backend del negocio**, con la lógica de **historias** y **comentarios** de la aplicación.
+El repositorio [Inkly Core](https://github.com/LiangCamilo/story-service) corresponde al **backend del negocio**, con la lógica de **historias** y **comentarios** de la aplicación.
 
 ## Tecnologías
 - Spring Cloud
