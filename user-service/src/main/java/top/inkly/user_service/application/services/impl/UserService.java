@@ -22,6 +22,7 @@ public class UserService implements IUserService {
     private final UserRepository repository;
     private final IRoleService roleService;
 
+    @Override
     public PageResponse<User> findUsers(PaginationRequest request, UserFilters filters) {
         PaginationResult<User> pagination = repository.findAll(request, filters);
 

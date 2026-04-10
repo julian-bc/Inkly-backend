@@ -1,4 +1,4 @@
-package top.inkly.user_service.infrastructure.restapi.controller;
+package top.inkly.user_service.infrastructure.restapi.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +15,7 @@ import top.inkly.shared.domain.PageResponse;
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.user_service.application.services.IUserService;
 import top.inkly.user_service.application.services.filters.UserFilters;
+import top.inkly.user_service.infrastructure.restapi.controller.IUserRestController;
 import top.inkly.user_service.infrastructure.restapi.dtos.CreateUser;
 import top.inkly.user_service.infrastructure.restapi.dtos.PatchUser;
 import top.inkly.user_service.infrastructure.restapi.dtos.UserResponse;
@@ -25,7 +26,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserRestController {
+public class UserRestController implements IUserRestController {
     private final IUserService service;
     private final UserRestMapper mapper;
 

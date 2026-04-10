@@ -12,7 +12,15 @@ spring:
       ddl-auto: update
 server:
   port: 8090
+
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs
