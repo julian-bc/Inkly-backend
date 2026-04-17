@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter @Setter
@@ -18,7 +16,10 @@ public class User {
     private String userName;
     private String email;
     private String password;
-    private List<Role> roles = new ArrayList<>();
+    private Boolean emailVerified;
+    private Boolean passwordVerified;
+    private Boolean enable;
+    private Role role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

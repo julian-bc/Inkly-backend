@@ -19,6 +19,7 @@
     <modules>
         <module>eureka-server</module>
         <module>user-service</module>
+        <module>shared</module>
     </modules>
 
     <properties>

@@ -2,57 +2,77 @@ package top.inkly.user_service.application.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import top.inkly.shared.domain.PageResponse;
+import top.inkly.shared.domain.PaginationRequest;
+import top.inkly.shared.domain.PaginationResult;
+import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
+import top.inkly.user_service.application.services.filters.UserFilters;
 import top.inkly.user_service.domain.exceptions.UserNotFoundException;
+import top.inkly.user_service.domain.models.Role;
 import top.inkly.user_service.domain.models.User;
 import top.inkly.user_service.domain.repositories.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository repository;
+    private final IRoleService roleService;
 
     @Override
-    public List<User> findUsers() {
-        return repository.findAll();
+    public PageResponse<User> findUsers(PaginationRequest request, UserFilters filters) {
+        PaginationResult<User> pagination = repository.findAll(request, filters);
+
+        return PageResponse.<User>builder()
+                .data(pagination.getContent())
+                .meta(pagination.toMetaData())
+                .build();
     }
 
     @Override
     public User findUser(UUID userId) {
         return repository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Usuario con " + userId + " no encontrado!"));
+                .orElseThrow(() -> new UserNotFoundException("Usuario con id " + userId + " no encontrado!"));
     }
 
     @Override
     public void createUser(User user) {
+        Role userRole = roleService.findRole(2);
+
         user.setCreatedAt(LocalDateTime.now());
+        user.setEmailVerified(false);
+        user.setPasswordVerified(true);
+        user.setEnable(true);
+        user.setRole(userRole);
         repository.save(user);
     }
 
     @Override
     public void updateUser(UUID userId, User userUpdated) {
         User userSaved = this.findUser(userId);
+        String email = userSaved.getEmail();
 
         userSaved.setUserName(userUpdated.getUserName());
         userSaved.setEmail(userUpdated.getEmail());
-        userSaved.setRoles(userUpdated.getRoles());
         userSaved.setUpdatedAt(LocalDateTime.now());
+
+        if (!email.equals(userUpdated.getEmail())) {
+            userSaved.setEmailVerified(false);
+        }
 
         repository.save(userSaved);
     }
 
     @Override
-    public void resetPassword(User userUpdated) {
-        userUpdated.setUpdatedAt(LocalDateTime.now());
-        repository.save(userUpdated);
-    }
+    public void disableUser(UUID userId) {
+        User userSaved = this.findUser(userId);
 
-    @Override
-    public void deleteUser(UUID userId) {
-        repository.deleteById(userId);
+        userSaved.setEnable(false);
+        userSaved.setUpdatedAt(LocalDateTime.now());
+
+        repository.save(userSaved);
     }
 }

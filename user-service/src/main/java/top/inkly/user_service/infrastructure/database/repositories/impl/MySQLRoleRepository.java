@@ -7,7 +7,7 @@ import top.inkly.user_service.domain.repositories.RoleRepository;
 import top.inkly.user_service.infrastructure.database.mapper.RoleMapperInfra;
 import top.inkly.user_service.infrastructure.database.repositories.RoleJpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,7 +16,8 @@ public class MySQLRoleRepository implements RoleRepository {
     private final RoleMapperInfra mapper;
 
     @Override
-    public List<Role> findAll() {
-        return mapper.toDomain(jpaRepository.findAll());
+    public Optional<Role> findById(Integer id) {
+        return jpaRepository.findById(id)
+                .map(mapper::toDomain);
     }
 }

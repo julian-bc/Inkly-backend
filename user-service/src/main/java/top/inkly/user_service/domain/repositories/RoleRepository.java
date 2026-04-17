@@ -2,8 +2,8 @@ package top.inkly.user_service.domain.repositories;
 
 import top.inkly.user_service.domain.models.Role;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface RoleRepository {
-    List<Role> findAll();
+    Optional<Role> findById(Integer id);
 }
