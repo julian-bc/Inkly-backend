@@ -15,6 +15,7 @@ public class UserModel {
     private UUID userId;
     private String userName;
     private String email;
+    private String password;
     private Boolean emailVerified;
     private Boolean passwordVerified;
     private Boolean enable;

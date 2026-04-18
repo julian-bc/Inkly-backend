@@ -5,10 +5,9 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Component;
-import top.inkly.user_service.domain.exceptions.business.RoleNotFoundException;
-import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
 import top.inkly.user_service.domain.exceptions.keycloak.FailedKeycloakOperationException;
 import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakRoleException;
+import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakUserException;
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.domain.models.enums.RoleNames;
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
@@ -25,10 +24,11 @@ public class KeycloakUserAdapter implements KeycloakConnectorPort {
     private final KeycloakMapperInfra mapper;
 
     @Override
-    public String saveKeycloakUser(UserModel user) throws FailedKeycloakOperationException, RoleNotFoundException {
+    public String saveKeycloakUser(UserModel user) throws FailedKeycloakOperationException, NotFoundKeycloakRoleException {
         UserRepresentation userToKeycloak;
         userToKeycloak = mapper.toRepresentation(user);
         userToKeycloak.setEnabled(true);
+        assignCredentials(userToKeycloak, user.getPassword());
 
         String userId;
         try {
@@ -70,23 +70,50 @@ public class KeycloakUserAdapter implements KeycloakConnectorPort {
     }
 
     @Override
-    public UserModel getKeycloakUserById(String userId) throws FailedKeycloakOperationException, UserNotFoundException {
-        return null;
+    public UserModel getKeycloakUserById(String userId) throws FailedKeycloakOperationException, NotFoundKeycloakUserException {
+        UserRepresentation userFromKeycloak = keycloakRepository.getById(userId);
+        if (userFromKeycloak == null) {
+            throw new NotFoundKeycloakUserException(userId);
+        }
+        return mapper.toModel(userFromKeycloak);
     }
 
     @Override
-    public UserModel getKeycloakUserByUsername(String username) throws FailedKeycloakOperationException, UserNotFoundException {
-        return null;
+    public UserModel getKeycloakUserByUsername(String username) throws FailedKeycloakOperationException, NotFoundKeycloakUserException {
+        UserRepresentation userFromKeycloak = keycloakRepository.getByUsername(username);
+        if (userFromKeycloak == null) {
+            throw new NotFoundKeycloakUserException(username);
+        }
+        return mapper.toModel(userFromKeycloak);
+    }
+
+    @Override
+    public UserModel getKeycloakUserByEmail(String email) throws FailedKeycloakOperationException, NotFoundKeycloakUserException {
+        UserRepresentation userFromKeycloak = keycloakRepository.getByEmail(email);
+        if (userFromKeycloak == null) {
+            throw new NotFoundKeycloakUserException(email);
+        }
+        return mapper.toModel(userFromKeycloak);
     }
 
     @Override
     public void changeKeycloakUserStatus(String userId) throws FailedKeycloakOperationException {
-
+        try {
+            UserRepresentation userToKeycloak = keycloakRepository.getById(userId);
+            userToKeycloak.setEnabled(!userToKeycloak.isEnabled());
+            keycloakRepository.update(userId, userToKeycloak);
+        } catch(RuntimeException e) {
+            throw new FailedKeycloakOperationException("Error Cambiando Estado de Usuario en Keycloak: " + e.getMessage());
+        }
     }
 
     @Override
     public void rollbackKeycloakUserCreation(String userId) throws FailedKeycloakOperationException {
-
+        try {
+            keycloakRepository.delete(userId);
+        } catch (RuntimeException e) {
+            throw new FailedKeycloakOperationException(e.getMessage());
+        }
     }
 
     private void assignCredentials(UserRepresentation user, String password) {
