@@ -1,4 +1,4 @@
-package top.inkly.user_service.infrastructure.output.client;
+package top.inkly.user_service.infrastructure.output.keycloak.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;

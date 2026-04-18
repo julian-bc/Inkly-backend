@@ -1,4 +1,4 @@
-package top.inkly.user_service.infrastructure.output.config;
+package top.inkly.user_service.infrastructure.output.keycloak.config;
 
 import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;

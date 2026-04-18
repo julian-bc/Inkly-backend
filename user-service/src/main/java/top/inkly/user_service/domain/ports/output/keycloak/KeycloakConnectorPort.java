@@ -7,7 +7,7 @@ import top.inkly.user_service.domain.models.UserModel;
 
 public interface KeycloakConnectorPort {
 
-    void saveKeycloakUser(UserModel user) throws FailedKeycloakOperationException, RoleNotFoundException;
+    String saveKeycloakUser(UserModel user) throws FailedKeycloakOperationException, RoleNotFoundException;
 
     void updateKeycloakUser(String userId, UserModel user) throws FailedKeycloakOperationException;
 
