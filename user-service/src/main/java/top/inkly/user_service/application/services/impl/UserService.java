@@ -8,10 +8,10 @@ import top.inkly.shared.domain.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
 import top.inkly.user_service.application.services.filters.UserFilters;
-import top.inkly.user_service.domain.exceptions.UserNotFoundException;
-import top.inkly.user_service.domain.models.Role;
-import top.inkly.user_service.domain.models.User;
-import top.inkly.user_service.domain.repositories.UserRepository;
+import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
+import top.inkly.user_service.domain.models.RoleModel;
+import top.inkly.user_service.domain.models.UserModel;
+import top.inkly.user_service.domain.ports.output.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -19,28 +19,29 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
+
     private final UserRepository repository;
     private final IRoleService roleService;
 
     @Override
-    public PageResponse<User> findUsers(PaginationRequest request, UserFilters filters) {
-        PaginationResult<User> pagination = repository.findAll(request, filters);
+    public PageResponse<UserModel> findUsers(PaginationRequest request, UserFilters filters) {
+        PaginationResult<UserModel> pagination = repository.findAll(request, filters);
 
-        return PageResponse.<User>builder()
+        return PageResponse.<UserModel>builder()
                 .data(pagination.getContent())
                 .meta(pagination.toMetaData())
                 .build();
     }
 
     @Override
-    public User findUser(UUID userId) {
+    public UserModel findUser(UUID userId) {
         return repository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Usuario con id " + userId + " no encontrado!"));
     }
 
     @Override
-    public void createUser(User user) {
-        Role userRole = roleService.findRole(2);
+    public void createUser(UserModel user) {
+        RoleModel userRole = roleService.findRole(2);
 
         user.setCreatedAt(LocalDateTime.now());
         user.setEmailVerified(false);
@@ -51,8 +52,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void updateUser(UUID userId, User userUpdated) {
-        User userSaved = this.findUser(userId);
+    public void updateUser(UUID userId, UserModel userUpdated) {
+        UserModel userSaved = this.findUser(userId);
         String email = userSaved.getEmail();
 
         userSaved.setUserName(userUpdated.getUserName());
@@ -68,7 +69,7 @@ public class UserService implements IUserService {
 
     @Override
     public void disableUser(UUID userId) {
-        User userSaved = this.findUser(userId);
+        UserModel userSaved = this.findUser(userId);
 
         userSaved.setEnable(false);
         userSaved.setUpdatedAt(LocalDateTime.now());

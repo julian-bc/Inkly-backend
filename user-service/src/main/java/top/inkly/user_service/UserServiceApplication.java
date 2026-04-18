@@ -6,10 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
-import top.inkly.user_service.infrastructure.database.entities.RoleEntity;
-import top.inkly.user_service.infrastructure.database.entities.UserEntity;
-import top.inkly.user_service.infrastructure.database.repositories.RoleJpaRepository;
-import top.inkly.user_service.infrastructure.database.repositories.UserJpaRepository;
+import top.inkly.user_service.infrastructure.output.database.entities.RoleEntity;
+import top.inkly.user_service.infrastructure.output.database.entities.UserEntity;
+import top.inkly.user_service.infrastructure.output.database.repositories.RoleJpaRepository;
+import top.inkly.user_service.infrastructure.output.database.repositories.UserJpaRepository;
 
 import java.time.LocalDateTime;
 
