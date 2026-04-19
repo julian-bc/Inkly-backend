@@ -1,7 +1,6 @@
 package top.inkly.user_service.infrastructure.output.keycloak.repository;
 
 import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.RoleRepresentation;

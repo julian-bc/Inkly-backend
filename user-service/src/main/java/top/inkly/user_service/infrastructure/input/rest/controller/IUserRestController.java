@@ -35,5 +35,5 @@ public interface IUserRestController {
     void updateUser(UUID id, PatchUser userUpdated);
 
     @Operation(summary = "Deshabilitar usuario", description = "Cambia el estado del usuario a inactivo.")
-    void disableUser(UUID id);
+    void toggleUserStatus(UUID id);
 }

@@ -22,7 +22,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userId;
     private String userName;
     private String email;

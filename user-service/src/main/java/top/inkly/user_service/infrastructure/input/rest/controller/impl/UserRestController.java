@@ -63,9 +63,9 @@ public class UserRestController implements IUserRestController {
         service.updateUser(id, mapper.toDomain(userUpdated));
     }
 
-    @PatchMapping("/{id}/disable")
+    @PatchMapping("/{id}/toggle-status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void disableUser(@PathVariable UUID id) {
-        service.disableUser(id);
+    public void toggleUserStatus(@PathVariable UUID id) {
+        service.toggleUserStatus(id);
     }
 }

@@ -12,5 +12,5 @@ public interface IUserService {
     UserModel findUser(UUID userId);
     void createUser(UserModel user);
     void updateUser(UUID userId, UserModel userUpdated);
-    void disableUser(UUID userId);
+    void toggleUserStatus(UUID userId);
 }

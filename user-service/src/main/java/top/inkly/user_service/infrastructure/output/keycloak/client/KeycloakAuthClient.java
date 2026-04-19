@@ -10,7 +10,7 @@ import java.util.Map;
 @FeignClient(name = "keycloak-auth", url = "${keycloak.server.url}")
 public interface KeycloakAuthClient {
 
-    @PostMapping(value = "${keycloak.auth.login.url}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "${keycloak.auth.url.login}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     ResponseEntity<Map<String, Object>> login(Map<String, ?> loginData);
 
 }
