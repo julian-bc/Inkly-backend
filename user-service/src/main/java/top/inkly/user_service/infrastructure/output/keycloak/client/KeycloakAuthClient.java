@@ -13,4 +13,10 @@ public interface KeycloakAuthClient {
     @PostMapping(value = "${keycloak.auth.url.login}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     ResponseEntity<Map<String, Object>> login(Map<String, ?> loginData);
 
+    @PostMapping(value = "${keycloak.auth.url.logout}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    void logout(Map<String, ?> logoutData);
+
+    @PostMapping(value = "${keycloak.auth.url.introspection}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    ResponseEntity<Map<String, Object>> introspect(Map<String, ?> introspectionData);
+
 }
