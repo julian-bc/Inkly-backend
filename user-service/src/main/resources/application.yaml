@@ -1,17 +1,38 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://localhost:3306/user_database
-    username:
-    password:
+    url: ${SERVICE.USER.DATABASE.URL}
+    username: ${SERVICE.MYSQL.DATABASE.USER}
+    password: ${SERVICE.MYSQL.DATABASE.PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
-server:
-  port: 8090
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK.REALM.ISSUER}
+
+keycloak:
+  server:
+    url: ${KEYCLOAK.SERVER.URL}
+  client:
+    id: ${KEYCLOAK.CLIENT.ID}
+    secret: ${KEYCLOAK.CLIENT.SECRET}
+  realm: ${KEYCLOAK.REALM}
+  auth:
+    url:
+      login: ${KEYCLOAK.AUTH.LOGIN.URL}
+      logout: ${KEYCLOAK.AUTH.LOGOUT.URL}
+      introspection: ${KEYCLOAK.AUTH.INTROSPECTION.URL}
+  skip:
+    defaultrole: ${KEYCLOAK.SKIP.ROLE}
+
 
 eureka:
   client:

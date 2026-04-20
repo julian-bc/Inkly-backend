@@ -1,6 +1,8 @@
 package top.inkly.user_service.application.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.inkly.shared.domain.PageResponse;
 import top.inkly.shared.domain.PaginationRequest;
@@ -8,10 +10,12 @@ import top.inkly.shared.domain.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
 import top.inkly.user_service.application.services.filters.UserFilters;
-import top.inkly.user_service.domain.exceptions.UserNotFoundException;
-import top.inkly.user_service.domain.models.Role;
-import top.inkly.user_service.domain.models.User;
-import top.inkly.user_service.domain.repositories.UserRepository;
+import top.inkly.user_service.domain.exceptions.business.FailedDatabaseOperation;
+import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
+import top.inkly.user_service.domain.models.RoleModel;
+import top.inkly.user_service.domain.models.UserModel;
+import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
+import top.inkly.user_service.domain.ports.output.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -19,40 +23,52 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
+
     private final UserRepository repository;
     private final IRoleService roleService;
+    private final KeycloakConnectorPort keycloak;
 
     @Override
-    public PageResponse<User> findUsers(PaginationRequest request, UserFilters filters) {
-        PaginationResult<User> pagination = repository.findAll(request, filters);
+    public PageResponse<UserModel> findUsers(PaginationRequest request, UserFilters filters) {
+        PaginationResult<UserModel> pagination = repository.findAll(request, filters);
 
-        return PageResponse.<User>builder()
+        return PageResponse.<UserModel>builder()
                 .data(pagination.getContent())
                 .meta(pagination.toMetaData())
                 .build();
     }
 
     @Override
-    public User findUser(UUID userId) {
+    public UserModel findUser(UUID userId) {
         return repository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Usuario con id " + userId + " no encontrado!"));
     }
 
     @Override
-    public void createUser(User user) {
-        Role userRole = roleService.findRole(2);
+    @SneakyThrows
+    public void createUser(UserModel user) {
+        RoleModel userRole = roleService.findRole(2);
 
         user.setCreatedAt(LocalDateTime.now());
         user.setEmailVerified(false);
         user.setPasswordVerified(true);
         user.setEnable(true);
         user.setRole(userRole);
-        repository.save(user);
+
+        String userId = keycloak.saveKeycloakUser(user);
+        user.setUserId(UUID.fromString(userId));
+
+        try {
+            repository.save(user);
+        } catch (Exception e) {
+            keycloak.rollbackKeycloakUserCreation(userId);
+            throw new FailedDatabaseOperation("Error al crear usuario en Base de Datos: " + e.getMessage());
+        }
     }
 
     @Override
-    public void updateUser(UUID userId, User userUpdated) {
-        User userSaved = this.findUser(userId);
+    public void updateUser(UUID userId, UserModel userUpdated) {
+        UserModel userSaved = this.findUser(userId);
         String email = userSaved.getEmail();
 
         userSaved.setUserName(userUpdated.getUserName());
@@ -63,16 +79,23 @@ public class UserService implements IUserService {
             userSaved.setEmailVerified(false);
         }
 
-        repository.save(userSaved);
+        keycloak.updateKeycloakUser(userId.toString(), userSaved);
+        try {
+            repository.save(userSaved);
+        } catch (Exception e) {
+            keycloak.updateKeycloakUser(userId.toString(), this.findUser(userId));
+            throw new FailedDatabaseOperation("Error al actualizar usuario en Base de Datos: " + e.getMessage());
+        }
     }
 
     @Override
-    public void disableUser(UUID userId) {
-        User userSaved = this.findUser(userId);
+    public void toggleUserStatus(UUID userId) {
+        UserModel userSaved = this.findUser(userId);
 
-        userSaved.setEnable(false);
+        userSaved.setEnable(!userSaved.getEnable());
         userSaved.setUpdatedAt(LocalDateTime.now());
 
+        keycloak.changeKeycloakUserStatus(userId.toString());
         repository.save(userSaved);
     }
 }

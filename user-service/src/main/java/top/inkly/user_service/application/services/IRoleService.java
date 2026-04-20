@@ -1,7 +1,7 @@
 package top.inkly.user_service.application.services;
 
-import top.inkly.user_service.domain.models.Role;
+import top.inkly.user_service.domain.models.RoleModel;
 
 public interface IRoleService {
-    Role findRole(Integer roleId);
+    RoleModel findRole(Integer roleId);
 }

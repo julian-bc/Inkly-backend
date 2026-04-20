@@ -1,0 +1,68 @@
+package top.inkly.user_service.application.services.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import top.inkly.user_service.application.services.IAuthService;
+import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakUserException;
+import top.inkly.user_service.domain.models.UserModel;
+import top.inkly.user_service.domain.models.auth.LoginRequestModel;
+import top.inkly.user_service.domain.models.auth.LoginResponseModel;
+import top.inkly.user_service.domain.models.auth.SessionResponseModel;
+import top.inkly.user_service.domain.models.auth.TokenValidationModel;
+import top.inkly.user_service.domain.ports.output.keycloak.AuthConnectorPort;
+import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
+import top.inkly.user_service.domain.shared.Constants;
+
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService implements IAuthService {
+
+    private final AuthConnectorPort auth;
+    private final KeycloakConnectorPort keycloak;
+
+    @Override
+    public LoginResponseModel login(LoginRequestModel loginRequest) {
+        Map<String, String> loginResponse = auth.login(loginRequest);
+
+        return new LoginResponseModel(
+                getAuthUserId(loginRequest.getUsername()),
+                loginResponse.get(Constants.ACCESS_TOKEN),
+                loginResponse.get(Constants.REFRESH_TOKEN)
+        );
+    }
+
+    @Override
+    public void logout(String refreshToken) {
+        auth.logout(refreshToken);
+    }
+
+    @Override
+    public TokenValidationModel validateToken(String token) {
+        Map<String, Object> validationResponse = auth.validateToken(token);
+        return new TokenValidationModel(
+                (boolean) validationResponse.get(Constants.ACTIVE)
+        );
+    }
+
+    @Override
+    public SessionResponseModel refreshSession(String refreshToken) {
+        Map<String, String> refreshResponse = auth.refresh(refreshToken);
+        return new SessionResponseModel(
+                refreshResponse.get(Constants.ACCESS_TOKEN)
+        );
+    }
+
+    private String getAuthUserId(String usernameOrEmail) {
+        UserModel authUser = keycloak.getKeycloakUserByUsername(usernameOrEmail);
+        if (authUser == null) {
+            authUser = keycloak.getKeycloakUserByEmail(usernameOrEmail);
+        }
+        if (authUser == null) {
+            throw new NotFoundKeycloakUserException(usernameOrEmail);
+        }
+        return authUser.getUserId().toString();
+    }
+
+}
