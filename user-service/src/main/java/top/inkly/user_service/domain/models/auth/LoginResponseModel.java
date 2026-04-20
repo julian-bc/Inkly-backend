@@ -6,12 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseModel {
+public class LoginResponseModel extends SessionResponseModel {
 
-    private String userId;
-    private String accessToken;
+    public LoginResponseModel(String userId, String accessToken, String refreshToken) {
+        super(accessToken);
+        this.refreshToken = refreshToken;
+        this.userId = userId;
+    }
+
     private String refreshToken;
+    private String userId;
 
 }

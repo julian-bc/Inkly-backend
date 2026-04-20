@@ -2,7 +2,6 @@ package top.inkly.user_service.infrastructure.output.keycloak.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import top.inkly.user_service.domain.exceptions.keycloak.FailedKeycloakOperationException;
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
@@ -92,4 +91,31 @@ public class KeycloakAuthAdapter implements AuthConnectorPort {
 
         return validationResponseData;
     }
+
+    @Override
+    public Map<String, String> refresh(String refreshToken) {
+        Map<String, String> refreshData = Map.of(
+                Constants.GRANT_TYPE, Constants.BODY_REFRESH_TOKEN,
+                Constants.CLIENT_ID, clientId,
+                Constants.CLIENT_SECRET, clientSecret,
+                Constants.BODY_REFRESH_TOKEN, refreshToken
+        );
+
+        Map<String, String> refreshResponseData = new HashMap<>();
+
+        try {
+            Map<String, Object> bodyResponse = authClient.login(refreshData).getBody();
+            if (bodyResponse != null) {
+                refreshResponseData = Map.of(
+                        Constants.ACCESS_TOKEN, bodyResponse.get(Constants.BODY_ACCESS_TOKEN).toString()
+                );
+            }
+
+        } catch (Exception e) {
+            throw new FailedKeycloakOperationException(e.getMessage());
+        }
+
+        return refreshResponseData;
+    }
+
 }

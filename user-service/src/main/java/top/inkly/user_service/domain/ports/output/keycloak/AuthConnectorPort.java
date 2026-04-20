@@ -12,4 +12,6 @@ public interface AuthConnectorPort {
 
     Map<String, Object> validateToken(String token);
 
+    Map<String, String> refresh(String refreshToken);
+
 }

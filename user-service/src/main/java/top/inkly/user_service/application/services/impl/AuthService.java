@@ -7,6 +7,7 @@ import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakUserExc
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
 import top.inkly.user_service.domain.models.auth.LoginResponseModel;
+import top.inkly.user_service.domain.models.auth.SessionResponseModel;
 import top.inkly.user_service.domain.models.auth.TokenValidationModel;
 import top.inkly.user_service.domain.ports.output.keycloak.AuthConnectorPort;
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
@@ -25,17 +26,8 @@ public class AuthService implements IAuthService {
     public LoginResponseModel login(LoginRequestModel loginRequest) {
         Map<String, String> loginResponse = auth.login(loginRequest);
 
-        UserModel authUser = keycloak.getKeycloakUserByUsername(loginRequest.getUsername());
-        if (authUser == null) {
-            authUser = keycloak.getKeycloakUserByEmail(loginRequest.getUsername());
-        }
-
-        if (authUser == null) {
-            throw new NotFoundKeycloakUserException(loginRequest.getUsername());
-        }
-
         return new LoginResponseModel(
-                authUser.getUserId().toString(),
+                getAuthUserId(loginRequest.getUsername()),
                 loginResponse.get(Constants.ACCESS_TOKEN),
                 loginResponse.get(Constants.REFRESH_TOKEN)
         );
@@ -53,4 +45,24 @@ public class AuthService implements IAuthService {
                 (boolean) validationResponse.get(Constants.ACTIVE)
         );
     }
+
+    @Override
+    public SessionResponseModel refreshSession(String refreshToken) {
+        Map<String, String> refreshResponse = auth.refresh(refreshToken);
+        return new SessionResponseModel(
+                refreshResponse.get(Constants.ACCESS_TOKEN)
+        );
+    }
+
+    private String getAuthUserId(String usernameOrEmail) {
+        UserModel authUser = keycloak.getKeycloakUserByUsername(usernameOrEmail);
+        if (authUser == null) {
+            authUser = keycloak.getKeycloakUserByEmail(usernameOrEmail);
+        }
+        if (authUser == null) {
+            throw new NotFoundKeycloakUserException(usernameOrEmail);
+        }
+        return authUser.getUserId().toString();
+    }
+
 }

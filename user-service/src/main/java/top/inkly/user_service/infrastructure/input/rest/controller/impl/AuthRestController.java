@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.inkly.user_service.application.services.IAuthService;
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
 import top.inkly.user_service.domain.models.auth.LoginResponseModel;
+import top.inkly.user_service.domain.models.auth.SessionResponseModel;
 import top.inkly.user_service.domain.shared.Constants;
 import top.inkly.user_service.infrastructure.input.rest.dtos.auth.LoginRequest;
 import top.inkly.user_service.infrastructure.input.rest.dtos.auth.LoginResponse;
@@ -51,14 +52,16 @@ public class AuthRestController {
         if (refreshToken != null) {
             authService.logout(refreshToken);
 
-            response.addHeader(HttpHeaders.SET_COOKIE,
-                    buildCookie(Constants.BODY_ACCESS_TOKEN, Constants.BLANK, Constants.ZERO)
-            );
-
-            response.addHeader(HttpHeaders.SET_COOKIE,
-                    buildCookie(Constants.BODY_REFRESH_TOKEN, Constants.BLANK, Constants.ZERO)
-            );
         }
+
+        response.addHeader(HttpHeaders.SET_COOKIE,
+                buildCookie(Constants.BODY_ACCESS_TOKEN, Constants.BLANK, Constants.ZERO)
+        );
+
+        response.addHeader(HttpHeaders.SET_COOKIE,
+                buildCookie(Constants.BODY_REFRESH_TOKEN, Constants.BLANK, Constants.ZERO)
+        );
+
         return ResponseEntity.ok().build();
     }
 
@@ -90,6 +93,21 @@ public class AuthRestController {
         }
 
         return ResponseEntity.ok().body(tokenValidation);
+    }
+
+    @PostMapping("/refresh-session")
+    ResponseEntity<Void> refreshSession(
+            @CookieValue(name = Constants.BODY_REFRESH_TOKEN, required = false) String refreshToken,
+            HttpServletResponse response
+    ) {
+        SessionResponseModel refreshResponse = authService.refreshSession(refreshToken);
+
+        response.addHeader(HttpHeaders.SET_COOKIE,
+                buildCookie(Constants.BODY_ACCESS_TOKEN, refreshResponse.getAccessToken(),
+                        Constants.COOKIE_ACCESS_TOKEN_DURATION * 60)
+        );
+
+        return ResponseEntity.ok().build();
     }
 
     private String buildCookie(String cookieName, String cookieValue, Integer cookieTime) {
