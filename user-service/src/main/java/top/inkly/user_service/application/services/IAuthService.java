@@ -2,6 +2,7 @@ package top.inkly.user_service.application.services;
 
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
 import top.inkly.user_service.domain.models.auth.LoginResponseModel;
+import top.inkly.user_service.domain.models.auth.TokenValidationModel;
 
 import java.util.Map;
 
@@ -11,6 +12,6 @@ public interface IAuthService {
 
     void logout(String refreshToken);
 
-    Map<String, String> validateToken(String token);
+   TokenValidationModel validateToken(String token);
 
 }

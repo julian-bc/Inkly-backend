@@ -8,10 +8,8 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KeycloakResponseDTO {
+public class TokenValidationResponse {
 
-    private String accessToken;
-    private String refreshToken;
-    private String userId;
+    private boolean active;
 
 }

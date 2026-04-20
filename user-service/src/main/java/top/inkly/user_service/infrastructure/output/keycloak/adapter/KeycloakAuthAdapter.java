@@ -77,13 +77,19 @@ public class KeycloakAuthAdapter implements AuthConnectorPort {
                 Constants.BODY_TOKEN, token
         );
 
-        ResponseEntity<Map<String, Object>> validationResponse;
+        Map<String, Object> validationResponseData = new HashMap<>();
+
         try {
-            validationResponse = authClient.introspect(validationData);
+            Map<String, Object> bodyResponse = authClient.introspect(validationData).getBody();
+            if (bodyResponse != null) {
+                validationResponseData = Map.of(
+                        Constants.ACTIVE, bodyResponse.get(Constants.ACTIVE)
+                );
+            }
         } catch (Exception e) {
             throw new FailedKeycloakOperationException(e.getMessage());
         }
 
-        return validationResponse.getBody();
+        return validationResponseData;
     }
 }

@@ -16,6 +16,7 @@ import top.inkly.user_service.domain.models.auth.LoginResponseModel;
 import top.inkly.user_service.domain.shared.Constants;
 import top.inkly.user_service.infrastructure.input.rest.dtos.auth.LoginRequest;
 import top.inkly.user_service.infrastructure.input.rest.dtos.auth.LoginResponse;
+import top.inkly.user_service.infrastructure.input.rest.dtos.auth.TokenValidationResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -61,21 +62,21 @@ public class AuthRestController {
     }
 
     @PostMapping("/validate/access")
-    ResponseEntity<Void> validateAccess(
+    ResponseEntity<TokenValidationResponse> validateAccess(
             @CookieValue(name = Constants.BODY_ACCESS_TOKEN) String accessToken
             ) {
-        authService.validateToken(accessToken);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(
+                new TokenValidationResponse(authService.validateToken(accessToken).isActive())
+        );
     }
 
     @PostMapping("/validate/session")
-    ResponseEntity<Void> validateSession(
+    ResponseEntity<TokenValidationResponse> validateSession(
             @CookieValue(name = Constants.BODY_REFRESH_TOKEN) String refreshToken
     ) {
-        authService.validateToken(refreshToken);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(
+                new TokenValidationResponse(authService.validateToken(refreshToken).isActive())
+        );
     }
 
     private String buildCookie(String cookieName, String cookieValue, Integer cookieTime) {

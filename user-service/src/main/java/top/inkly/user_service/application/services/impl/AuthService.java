@@ -7,6 +7,7 @@ import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakUserExc
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
 import top.inkly.user_service.domain.models.auth.LoginResponseModel;
+import top.inkly.user_service.domain.models.auth.TokenValidationModel;
 import top.inkly.user_service.domain.ports.output.keycloak.AuthConnectorPort;
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
 import top.inkly.user_service.domain.shared.Constants;
@@ -46,8 +47,10 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public Map<String, String> validateToken(String token) {
-        auth.validateToken(token);
-        return Map.of();
+    public TokenValidationModel validateToken(String token) {
+        Map<String, Object> validationResponse = auth.validateToken(token);
+        return new TokenValidationModel(
+                (boolean) validationResponse.get(Constants.ACTIVE)
+        );
     }
 }
