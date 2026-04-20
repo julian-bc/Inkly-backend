@@ -82,7 +82,7 @@ public class KeycloakUserAdapter implements KeycloakConnectorPort {
     public UserModel getKeycloakUserByUsername(String username) throws FailedKeycloakOperationException, NotFoundKeycloakUserException {
         UserRepresentation userFromKeycloak = keycloakRepository.getByUsername(username);
         if (userFromKeycloak == null) {
-            throw new NotFoundKeycloakUserException(username);
+            return null;
         }
         return mapper.toModel(userFromKeycloak);
     }
@@ -91,7 +91,7 @@ public class KeycloakUserAdapter implements KeycloakConnectorPort {
     public UserModel getKeycloakUserByEmail(String email) throws FailedKeycloakOperationException, NotFoundKeycloakUserException {
         UserRepresentation userFromKeycloak = keycloakRepository.getByEmail(email);
         if (userFromKeycloak == null) {
-            throw new NotFoundKeycloakUserException(email);
+            return null;
         }
         return mapper.toModel(userFromKeycloak);
     }

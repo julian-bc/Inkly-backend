@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import top.inkly.user_service.domain.models.enums.RoleNames;
 import top.inkly.user_service.infrastructure.output.database.entities.RoleEntity;
@@ -16,8 +17,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
-@SpringBootApplication
 @EnableDiscoveryClient
+@EnableFeignClients
+@SpringBootApplication
 public class UserServiceApplication {
 
 	public static void main(String[] args) {

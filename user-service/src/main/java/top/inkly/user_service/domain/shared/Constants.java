@@ -1,0 +1,27 @@
+package top.inkly.user_service.domain.shared;
+
+public class Constants {
+
+    // KEYCLOAK Constants
+    public static final String GRANT_TYPE = "grant_type";
+    public static final String CLIENT_ID = "client_id";
+    public static final String CLIENT_SECRET = "client_secret";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String SCOPE = "scope";
+    public static final String OPEN_ID = "openid";
+    // Login Response
+    public static final String BODY_ACCESS_TOKEN = "access_token";
+    public static final String BODY_REFRESH_TOKEN = "refresh_token";
+    public static final String BODY_TOKEN = "token";
+    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String REFRESH_TOKEN = "refreshToken";
+
+    // COOKIES Constants
+    public static final boolean HTTP_ONLY = true;
+    public static final String SAME_SITE_DEV = "Lax";
+    public static final boolean COOKIE_SECURE_DEV = false;
+    public static final String COOKIE_PATH = "/";
+
+
+}
