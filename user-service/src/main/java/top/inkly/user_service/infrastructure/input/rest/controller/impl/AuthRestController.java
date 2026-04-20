@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +31,51 @@ public class AuthRestController {
         );
 
         response.addHeader(HttpHeaders.SET_COOKIE,
-                buildCookie(Constants.BODY_ACCESS_TOKEN, authResponse.getAccessToken(), 15 * 60)
+                buildCookie(Constants.BODY_ACCESS_TOKEN, authResponse.getAccessToken(),
+                        Constants.COOKIE_ACCESS_TOKEN_DURATION * 60)
         );
 
         response.addHeader(HttpHeaders.SET_COOKIE,
-                buildCookie(Constants.BODY_REFRESH_TOKEN, authResponse.getRefreshToken(), 7 * 24 * 3600)
+                buildCookie(Constants.BODY_REFRESH_TOKEN, authResponse.getRefreshToken(),
+                        Constants.COOKIE_REFRESH_TOKEN_DURATION * 24 * 3600)
         );
 
         return ResponseEntity.ok(new LoginResponse(authResponse.getUserId()));
+    }
+
+    @PostMapping("/logout")
+    ResponseEntity<Void> logout(
+            @CookieValue(name = Constants.BODY_REFRESH_TOKEN) String refreshToken,
+            HttpServletResponse response) {
+        authService.logout(refreshToken);
+
+        //response.addHeader(HttpHeaders.SET_COOKIE,
+        //        buildCookie(Constants.BODY_ACCESS_TOKEN, Constants.BLANK, Constants.ZERO)
+        //);
+
+        //response.addHeader(HttpHeaders.SET_COOKIE,
+        //        buildCookie(Constants.BODY_REFRESH_TOKEN, Constants.BLANK, Constants.ZERO)
+        //);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/validate/access")
+    ResponseEntity<Void> validateAccess(
+            @CookieValue(name = Constants.BODY_ACCESS_TOKEN) String accessToken
+            ) {
+        authService.validateToken(accessToken);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/validate/session")
+    ResponseEntity<Void> validateSession(
+            @CookieValue(name = Constants.BODY_REFRESH_TOKEN) String refreshToken
+    ) {
+        authService.validateToken(refreshToken);
+
+        return ResponseEntity.ok().build();
     }
 
     private String buildCookie(String cookieName, String cookieValue, Integer cookieTime) {

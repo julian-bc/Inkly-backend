@@ -11,6 +11,6 @@ public interface IAuthService {
 
     void logout(String refreshToken);
 
-    Map<String, String> tokenValidate(String accessToken);
+    Map<String, String> validateToken(String token);
 
 }

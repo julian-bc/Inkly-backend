@@ -3,8 +3,6 @@ package top.inkly.user_service.application.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.inkly.user_service.application.services.IAuthService;
-import top.inkly.user_service.application.services.IUserService;
-import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakRoleException;
 import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakUserException;
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
@@ -44,11 +42,12 @@ public class AuthService implements IAuthService {
 
     @Override
     public void logout(String refreshToken) {
-
+        auth.logout(refreshToken);
     }
 
     @Override
-    public Map<String, String> tokenValidate(String accessToken) {
+    public Map<String, String> validateToken(String token) {
+        auth.validateToken(token);
         return Map.of();
     }
 }

@@ -22,6 +22,11 @@ public class Constants {
     public static final String SAME_SITE_DEV = "Lax";
     public static final boolean COOKIE_SECURE_DEV = false;
     public static final String COOKIE_PATH = "/";
+    public static final Integer COOKIE_ACCESS_TOKEN_DURATION = 15;
+    public static final Integer COOKIE_REFRESH_TOKEN_DURATION = 7;
 
+    // UTIL Constants
+    public static final String BLANK = "";
+    public static final Integer ZERO = 0;
 
 }
