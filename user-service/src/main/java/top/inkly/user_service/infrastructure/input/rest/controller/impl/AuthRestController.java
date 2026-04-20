@@ -46,37 +46,50 @@ public class AuthRestController {
 
     @PostMapping("/logout")
     ResponseEntity<Void> logout(
-            @CookieValue(name = Constants.BODY_REFRESH_TOKEN) String refreshToken,
+            @CookieValue(name = Constants.BODY_REFRESH_TOKEN, required = false) String refreshToken,
             HttpServletResponse response) {
-        authService.logout(refreshToken);
+        if (refreshToken != null) {
+            authService.logout(refreshToken);
 
-        //response.addHeader(HttpHeaders.SET_COOKIE,
-        //        buildCookie(Constants.BODY_ACCESS_TOKEN, Constants.BLANK, Constants.ZERO)
-        //);
+            response.addHeader(HttpHeaders.SET_COOKIE,
+                    buildCookie(Constants.BODY_ACCESS_TOKEN, Constants.BLANK, Constants.ZERO)
+            );
 
-        //response.addHeader(HttpHeaders.SET_COOKIE,
-        //        buildCookie(Constants.BODY_REFRESH_TOKEN, Constants.BLANK, Constants.ZERO)
-        //);
-
+            response.addHeader(HttpHeaders.SET_COOKIE,
+                    buildCookie(Constants.BODY_REFRESH_TOKEN, Constants.BLANK, Constants.ZERO)
+            );
+        }
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/validate/access")
     ResponseEntity<TokenValidationResponse> validateAccess(
-            @CookieValue(name = Constants.BODY_ACCESS_TOKEN) String accessToken
+            @CookieValue(name = Constants.BODY_ACCESS_TOKEN, required = false) String accessToken
             ) {
-        return ResponseEntity.ok().body(
-                new TokenValidationResponse(authService.validateToken(accessToken).isActive())
-        );
+        TokenValidationResponse tokenValidation = new TokenValidationResponse();
+
+        if (accessToken != null) {
+            tokenValidation.setActive(authService.validateToken(accessToken).isActive());
+        } else {
+            tokenValidation.setActive(false);
+        }
+
+        return ResponseEntity.ok().body(tokenValidation);
     }
 
     @PostMapping("/validate/session")
     ResponseEntity<TokenValidationResponse> validateSession(
-            @CookieValue(name = Constants.BODY_REFRESH_TOKEN) String refreshToken
+            @CookieValue(name = Constants.BODY_REFRESH_TOKEN, required = false) String refreshToken
     ) {
-        return ResponseEntity.ok().body(
-                new TokenValidationResponse(authService.validateToken(refreshToken).isActive())
-        );
+        TokenValidationResponse tokenValidation = new TokenValidationResponse();
+
+        if (refreshToken != null) {
+            tokenValidation.setActive(authService.validateToken(refreshToken).isActive());
+        } else {
+            tokenValidation.setActive(false);
+        }
+
+        return ResponseEntity.ok().body(tokenValidation);
     }
 
     private String buildCookie(String cookieName, String cookieValue, Integer cookieTime) {
