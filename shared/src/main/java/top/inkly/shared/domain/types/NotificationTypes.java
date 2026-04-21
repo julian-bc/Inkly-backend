@@ -1,4 +1,4 @@
-package top.inkly.notification_service.application.strategies.types;
+package top.inkly.shared.domain.types;
 
 public class NotificationTypes {
 

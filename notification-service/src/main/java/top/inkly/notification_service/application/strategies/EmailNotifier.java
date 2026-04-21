@@ -2,7 +2,7 @@ package top.inkly.notification_service.application.strategies;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import static top.inkly.notification_service.application.strategies.types.NotificationTypes.EMAIL;
+import static top.inkly.shared.domain.types.NotificationTypes.EMAIL;
 
 import top.inkly.notification_service.domain.models.EmailNotificationModel;
 import top.inkly.notification_service.domain.ports.output.MailSenderPort;

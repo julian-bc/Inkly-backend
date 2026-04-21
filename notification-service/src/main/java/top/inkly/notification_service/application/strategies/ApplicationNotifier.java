@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import top.inkly.notification_service.domain.models.InAppNotificationModel;
 import top.inkly.notification_service.domain.ports.output.NotificationRepositoryPort;
 
-import static top.inkly.notification_service.application.strategies.types.NotificationTypes.IN_APP;
+import static top.inkly.shared.domain.types.NotificationTypes.IN_APP;
 
 @Service(IN_APP)
 @RequiredArgsConstructor
