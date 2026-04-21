@@ -1,6 +1,6 @@
 package top.inkly.notification_service.application.strategies;
 
-import top.inkly.notification_service.domain.models.NotificationData;
+import top.inkly.notification_service.domain.models.union.NotificationData;
 
 public interface Notifier {
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import top.inkly.notification_service.domain.models.union.NotificationData;
 
 @Getter @Setter
 @AllArgsConstructor

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import static top.inkly.shared.domain.notification.types.NotificationTypes.EMAIL;
 
-import top.inkly.notification_service.domain.models.EmailNotificationModel;
-import top.inkly.notification_service.domain.models.NotificationData;
+import top.inkly.notification_service.domain.models.union.EmailNotificationModel;
+import top.inkly.notification_service.domain.models.union.NotificationData;
 import top.inkly.notification_service.domain.ports.output.MailSenderPort;
 
 @Service(EMAIL)

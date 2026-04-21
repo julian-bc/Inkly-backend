@@ -1,4 +1,4 @@
-package top.inkly.notification_service.domain.models;
+package top.inkly.notification_service.domain.models.union;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

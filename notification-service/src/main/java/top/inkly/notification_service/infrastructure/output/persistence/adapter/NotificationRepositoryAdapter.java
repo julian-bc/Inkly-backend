@@ -1,7 +1,7 @@
 package top.inkly.notification_service.infrastructure.output.persistence.adapter;
 
 import org.springframework.stereotype.Component;
-import top.inkly.notification_service.domain.models.InAppNotificationModel;
+import top.inkly.notification_service.domain.models.union.InAppNotificationModel;
 import top.inkly.notification_service.domain.ports.output.NotificationRepositoryPort;
 
 @Component

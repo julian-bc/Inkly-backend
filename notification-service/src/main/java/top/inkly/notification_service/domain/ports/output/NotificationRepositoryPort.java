@@ -1,6 +1,6 @@
 package top.inkly.notification_service.domain.ports.output;
 
-import top.inkly.notification_service.domain.models.InAppNotificationModel;
+import top.inkly.notification_service.domain.models.union.InAppNotificationModel;
 
 public interface NotificationRepositoryPort {
 
