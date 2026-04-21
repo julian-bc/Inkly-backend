@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,35 +15,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "T_NOTIFICATION_TEMPLATES")
+@Table(name = "T_SENT_NOTIFICATIONS")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationTemplateEntity {
+public class SentNotificationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String notificationTemplateId;
-    @Column(nullable = false, unique = true)
-    private String templateName;
+    private String notificationId;
     @Column(nullable = false)
-    private String templateSubject;
-    @Column(nullable = false, unique = true)
-    private String templateLocation;
+    private String userId;
+    @Column(nullable = false)
+    private String notificationContent;
+    @Column(nullable = false)
+    private boolean shown;
 
     @DateTimeFormat(pattern = "yyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
     private LocalDateTime createdAt;
     @DateTimeFormat(pattern = "yyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    private LocalDateTime shownAt;
 
 }
