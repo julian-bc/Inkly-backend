@@ -5,6 +5,6 @@ import top.inkly.notification_service.domain.models.NotificationModel;
 
 public interface NotifierUseCases<T> {
 
-    void executeSendNotification(NotificationModel<T> notification, String notificationType);
+    void executeSendNotification(NotificationModel<T> notification);
 
 }

@@ -5,7 +5,7 @@ import top.inkly.notification_service.domain.models.NotificationModel;
 import top.inkly.shared.infrastructure.input.dto.notification.NotificationRequestDTO;
 
 @Mapper(componentModel = "spring")
-public interface NotificationRestMapper {
+public interface NotificationInputMapper {
 
     NotificationModel toModel(NotificationRequestDTO notificationDTO);
 

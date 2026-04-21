@@ -14,8 +14,8 @@ public class NotificationSenderService implements NotifierUseCases {
     private final NotifierFactory notifierFactory;
 
     @Override
-    public void executeSendNotification(NotificationModel notification, String notificationType) {
-        Notifier notifier = notifierFactory.getNotifier(notificationType);
+    public void executeSendNotification(NotificationModel notification) {
+        Notifier notifier = notifierFactory.getNotifier(notification.getNotificationType());
         notifier.sendNotification(notification.getNotificationData());
     }
 
