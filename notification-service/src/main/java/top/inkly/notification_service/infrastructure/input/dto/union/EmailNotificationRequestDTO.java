@@ -1,17 +1,17 @@
-package top.inkly.notification_service.domain.models;
+package top.inkly.notification_service.infrastructure.input.dto.union;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import top.inkly.notification_service.infrastructure.input.dto.union.base.NotificationDataDTO;
 
 import java.util.Map;
 
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailNotificationModel implements NotificationData {
+public class EmailNotificationRequestDTO implements NotificationDataDTO {
 
     private String emailReceiver;
     private String notificationTemplateId;

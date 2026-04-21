@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationModel<T> {
+public class NotificationModel {
 
     private String notificationType;
-    private T notificationData;
+    private NotificationData notificationData;
 
 }

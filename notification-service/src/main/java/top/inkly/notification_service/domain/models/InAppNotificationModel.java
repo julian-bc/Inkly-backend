@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class InAppNotificationModel {
+public class InAppNotificationModel implements NotificationData {
 
     private String userId;
     private String notificationText;

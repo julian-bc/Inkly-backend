@@ -2,11 +2,10 @@ package top.inkly.user_service.application.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import top.inkly.shared.domain.PageResponse;
-import top.inkly.shared.domain.PaginationRequest;
-import top.inkly.shared.domain.PaginationResult;
+import top.inkly.shared.domain.pagination.PageResponse;
+import top.inkly.shared.domain.pagination.PaginationRequest;
+import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
 import top.inkly.user_service.application.services.filters.UserFilters;
