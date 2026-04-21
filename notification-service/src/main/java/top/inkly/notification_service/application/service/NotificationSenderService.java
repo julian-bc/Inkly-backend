@@ -1,0 +1,22 @@
+package top.inkly.notification_service.application.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import top.inkly.notification_service.application.factory.NotifierFactory;
+import top.inkly.notification_service.application.strategies.Notifier;
+import top.inkly.notification_service.domain.models.NotificationModel;
+import top.inkly.notification_service.domain.ports.input.NotifierUseCases;
+
+@Service
+@RequiredArgsConstructor
+public class NotificationSenderService implements NotifierUseCases {
+
+    private final NotifierFactory notifierFactory;
+
+    @Override
+    public void executeSendNotification(NotificationModel notification, String notificationType) {
+        Notifier notifier = notifierFactory.getNotifier(notificationType);
+        notifier.sendNotification(notification.getNotificationData());
+    }
+
+}
