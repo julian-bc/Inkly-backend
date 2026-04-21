@@ -1,0 +1,16 @@
+server:
+  port: 8100
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SERVICE.NOTIFICATION.DATABASE.URL}
+    username: ${SERVICE.MYSQL.DATABASE.USER}
+    password: ${SERVICE.MYSQL.DATABASE.PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        # Mostrar Mensajes SQL en Consola
+        format_sql: true
+    hibernate:
+      ddl-auto: update
