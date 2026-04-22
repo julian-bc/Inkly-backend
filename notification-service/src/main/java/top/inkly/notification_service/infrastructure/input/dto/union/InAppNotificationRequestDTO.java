@@ -12,6 +12,6 @@ import top.inkly.notification_service.infrastructure.input.dto.union.base.Notifi
 public class InAppNotificationRequestDTO implements NotificationDataDTO {
 
     private String userId;
-    private String notificationText;
+    private String notificationContent;
 
 }
