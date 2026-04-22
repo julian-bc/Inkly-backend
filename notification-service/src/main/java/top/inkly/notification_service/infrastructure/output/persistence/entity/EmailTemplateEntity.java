@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationTemplateEntity {
+public class EmailTemplateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
