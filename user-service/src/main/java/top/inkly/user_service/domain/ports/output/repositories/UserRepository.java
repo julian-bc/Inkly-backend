@@ -2,7 +2,7 @@ package top.inkly.user_service.domain.ports.output.repositories;
 
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.shared.domain.PaginationResult;
-import top.inkly.user_service.application.services.filters.UserFilters;
+import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.models.UserModel;
 
 import java.util.Optional;

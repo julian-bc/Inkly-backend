@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.inkly.shared.domain.PageResponse;
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.user_service.application.services.IUserService;
-import top.inkly.user_service.application.services.filters.UserFilters;
+import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.infrastructure.input.rest.controller.IUserRestController;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.CreateUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.PatchUser;

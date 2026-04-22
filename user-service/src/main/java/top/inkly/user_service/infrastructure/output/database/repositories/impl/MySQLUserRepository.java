@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.shared.domain.PaginationResult;
-import top.inkly.user_service.application.services.filters.UserFilters;
+import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.domain.ports.output.repositories.UserRepository;
 import top.inkly.user_service.infrastructure.output.database.entities.UserEntity;
