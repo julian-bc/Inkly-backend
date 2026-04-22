@@ -1,4 +1,4 @@
-package top.inkly.user_service.application.services.filters;
+package top.inkly.user_service.domain.filters;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

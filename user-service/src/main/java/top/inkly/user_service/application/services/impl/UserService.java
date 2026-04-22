@@ -2,14 +2,13 @@ package top.inkly.user_service.application.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.inkly.shared.domain.PageResponse;
 import top.inkly.shared.domain.PaginationRequest;
 import top.inkly.shared.domain.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
-import top.inkly.user_service.application.services.filters.UserFilters;
+import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.exceptions.business.FailedDatabaseOperation;
 import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
 import top.inkly.user_service.domain.models.RoleModel;
