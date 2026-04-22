@@ -16,7 +16,7 @@ public class ApplicationNotifier implements Notifier {
 
     @Override
     public void sendNotification(NotificationData notification) {
-        notificationRepository.createNotification((InAppNotificationModel) notification);
+        notificationRepository.saveSentNotification((InAppNotificationModel) notification);
     }
 
 }

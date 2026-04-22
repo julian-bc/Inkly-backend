@@ -1,4 +1,4 @@
-package top.inkly.notification_service.application.service;
+package top.inkly.notification_service.application.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

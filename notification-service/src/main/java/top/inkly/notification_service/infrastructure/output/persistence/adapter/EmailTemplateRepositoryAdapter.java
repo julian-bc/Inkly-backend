@@ -23,7 +23,12 @@ public class EmailTemplateRepositoryAdapter implements EmailTemplateRepositorypo
 
     @Override
     public Optional<EmailTemplateModel> findTemplateByName(String templateName) {
-        return templateRepository.findByTemplateName(templateName);
+        return templateRepository.findByTemplateName(templateName).map(mapper::toModel);
+    }
+
+    @Override
+    public Optional<EmailTemplateModel> findTemplateById(String templateId) {
+        return templateRepository.findById(templateId).map(mapper::toModel);
     }
 
     @Override

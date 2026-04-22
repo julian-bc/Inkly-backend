@@ -10,6 +10,8 @@ public interface EmailTemplateRepositoryport {
 
     Optional<EmailTemplateModel> findTemplateByName(String templateName);
 
+    Optional<EmailTemplateModel> findTemplateById(String templateId);
+
     void deleteTemplateById(String templateId);
 
 }

@@ -1,7 +1,7 @@
 package top.inkly.notification_service.infrastructure.input.mapper;
 
 import org.mapstruct.Mapper;
-import top.inkly.notification_service.domain.exceptions.NotFoundMapperException;
+import top.inkly.notification_service.domain.exceptions.NotFoundTemplateException;
 import top.inkly.notification_service.domain.models.union.EmailNotificationModel;
 import top.inkly.notification_service.domain.models.union.InAppNotificationModel;
 import top.inkly.notification_service.domain.models.union.NotificationData;
@@ -26,7 +26,7 @@ public interface NotificationInputMapper {
         if (notificationDataDTO instanceof InAppNotificationRequestDTO inApp) {
             return toInAppModel(inApp);
         }
-        throw new NotFoundMapperException(notificationDataDTO.getClass().getSimpleName());
+        throw new NotFoundTemplateException(notificationDataDTO.getClass().getSimpleName());
     }
 
 }
