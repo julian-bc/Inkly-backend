@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import top.inkly.notification_service.domain.filters.TemplateFiltersModel;
 import top.inkly.notification_service.domain.ports.input.TemplateUseCases;
 import top.inkly.notification_service.infrastructure.input.dto.TemplateGetResponseDTO;
 import top.inkly.notification_service.infrastructure.input.dto.TemplatePatchRequestDTO;
 import top.inkly.notification_service.infrastructure.input.dto.TemplatePostRequestDTO;
 import top.inkly.notification_service.infrastructure.input.mapper.TemplateInputMapper;
+import top.inkly.shared.domain.pagination.PageResponse;
+import top.inkly.shared.domain.pagination.PaginationRequest;
 
 @RestController
 @RequestMapping("/templates")
@@ -39,9 +42,18 @@ public class NotificationTemplatesRestController {
     }
 
     @GetMapping
-    ResponseEntity<TemplateGetResponseDTO> getTemplates(@RequestParam String templateName) {
+    ResponseEntity<PageResponse<TemplateGetResponseDTO>> getPageTemplates(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String templateName,
+            @RequestParam(required = false) String templateSubject
+    ) {
+        TemplateFiltersModel filters = TemplateFiltersModel.builder()
+                .templateName(templateName)
+                .templateSubject(templateSubject)
+                .build();
         return ResponseEntity.ok(
-                mapper.toDTO(templateService.getTemplateByNameIdentifier(templateName)));
+                mapper.toDTO(templateService.getPageTemplates(new PaginationRequest(page, size), filters)));
     }
 
     @DeleteMapping("/{templateId}")
