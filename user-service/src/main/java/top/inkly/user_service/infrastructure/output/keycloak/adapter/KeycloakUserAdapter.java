@@ -9,7 +9,7 @@ import top.inkly.user_service.domain.exceptions.keycloak.FailedKeycloakOperation
 import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakRoleException;
 import top.inkly.user_service.domain.exceptions.keycloak.NotFoundKeycloakUserException;
 import top.inkly.user_service.domain.models.UserModel;
-import top.inkly.user_service.domain.models.enums.RoleNames;
+import top.inkly.shared.domain.models.user.RoleNames;
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
 import top.inkly.user_service.infrastructure.output.keycloak.mapper.KeycloakMapperInfra;
 import top.inkly.user_service.infrastructure.output.keycloak.repository.KeycloakUserRepository;

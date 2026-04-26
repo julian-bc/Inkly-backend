@@ -1,13 +1,17 @@
 package top.inkly.verification_service.application.service.impl;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.inkly.verification_service.application.service.IVerificationService;
 import top.inkly.verification_service.domain.exceptions.business.NoAttemptsAvailableException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationCodeIsExpiredException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationNotFoundException;
+import top.inkly.verification_service.domain.exceptions.user.UserNotFoundException;
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.ports.out.repository.VerificationRepository;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
