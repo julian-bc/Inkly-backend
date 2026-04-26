@@ -2,7 +2,7 @@ package top.inkly.user_service.infrastructure.output.database.specification;
 
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
-import top.inkly.user_service.application.services.filters.UserFilters;
+import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.models.enums.RoleNames;
 import top.inkly.user_service.infrastructure.output.database.entities.UserEntity;
 
