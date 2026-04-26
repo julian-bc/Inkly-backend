@@ -11,6 +11,6 @@ import lombok.Setter;
 public class NotificationRequestDTO<T> {
 
     private String notificationType;
-    private T notificationValues;
+    private T notificationData;
 
 }
