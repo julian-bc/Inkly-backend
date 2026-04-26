@@ -1,3 +1,27 @@
+server:
+  port: 8070
+
 spring:
   application:
     name: verification-service
+
+  datasource:
+    url: ${SERVICE.VERIFICATION.DATABASE.URL}
+    username: ${SERVICE.MYSQL.DATABASE.USER}
+    password: ${SERVICE.MYSQL.DATABASE.PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs
