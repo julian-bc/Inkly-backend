@@ -3,9 +3,9 @@ package top.inkly.user_service.application.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import top.inkly.shared.domain.PageResponse;
-import top.inkly.shared.domain.PaginationRequest;
-import top.inkly.shared.domain.PaginationResult;
+import top.inkly.shared.domain.pagination.PageResponse;
+import top.inkly.shared.domain.pagination.PaginationRequest;
+import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
 import top.inkly.user_service.domain.filters.UserFilters;
@@ -14,10 +14,13 @@ import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
 import top.inkly.user_service.domain.models.RoleModel;
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
+import top.inkly.user_service.domain.ports.output.queues.NotificationPublisherPort;
 import top.inkly.user_service.domain.ports.output.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static top.inkly.user_service.application.services.utils.UserNotificationsBuilder.buildWelcomeNotification;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class UserService implements IUserService {
     private final UserRepository repository;
     private final IRoleService roleService;
     private final KeycloakConnectorPort keycloak;
+    private final NotificationPublisherPort notificationPublisher;
 
     @Override
     public PageResponse<UserModel> findUsers(PaginationRequest request, UserFilters filters) {
@@ -63,6 +67,8 @@ public class UserService implements IUserService {
             keycloak.rollbackKeycloakUserCreation(userId);
             throw new FailedDatabaseOperation("Error al crear usuario en Base de Datos: " + e.getMessage());
         }
+
+        notificationPublisher.publishNotificationMessage(buildWelcomeNotification(user));
     }
 
     @Override

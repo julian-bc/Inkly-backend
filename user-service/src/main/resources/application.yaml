@@ -17,6 +17,13 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK.REALM.ISSUER}
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: ${AMQP.HOST}
+    port: ${AMQP.PORT}
+    username: ${AMQP.USERNAME}
+    password: ${AMQP.PASSWORD}
 
 keycloak:
   server:

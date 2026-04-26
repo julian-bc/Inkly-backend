@@ -1,7 +1,7 @@
 package top.inkly.user_service.domain.ports.output.repositories;
 
-import top.inkly.shared.domain.PaginationRequest;
-import top.inkly.shared.domain.PaginationResult;
+import top.inkly.shared.domain.pagination.PaginationRequest;
+import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.models.UserModel;
 

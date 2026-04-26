@@ -27,6 +27,7 @@
 
         <!-- SHARED OWN DEPENDENCIES -->
         <module>shared</module>
+        <module>notification-service</module>
     </modules>
 
     <properties>
