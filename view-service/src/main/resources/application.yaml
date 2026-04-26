@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: view-service
+
+  mongodb:
+    uri: ${SERVICE.VIEW.MONGODB_URI}
+    database: ${SERVICE.VIEW.MONGODB_DATABASE}
