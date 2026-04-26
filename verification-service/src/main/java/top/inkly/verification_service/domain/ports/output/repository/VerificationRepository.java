@@ -1,4 +1,4 @@
-package top.inkly.verification_service.domain.ports.out.repository;
+package top.inkly.verification_service.domain.ports.output.repository;
 
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationType;

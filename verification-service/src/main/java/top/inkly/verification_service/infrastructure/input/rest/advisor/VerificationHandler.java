@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.inkly.verification_service.domain.exceptions.business.NoAttemptsAvailableException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationCodeIsExpiredException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationNotFoundException;
+import top.inkly.verification_service.domain.exceptions.user.UserNotFoundException;
 
 @RestControllerAdvice
 public class VerificationHandler {
-    @ExceptionHandler(VerificationNotFoundException.class)
-    public ResponseEntity<String> handleVerificationNotFound(VerificationNotFoundException ex) {
+    @ExceptionHandler({
+            VerificationNotFoundException.class,
+            UserNotFoundException.class
+    })
+    public ResponseEntity<String> handleVerificationNotFound(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 

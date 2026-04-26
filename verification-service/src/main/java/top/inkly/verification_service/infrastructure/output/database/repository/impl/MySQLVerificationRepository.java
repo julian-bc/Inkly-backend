@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationType;
-import top.inkly.verification_service.domain.ports.out.repository.VerificationRepository;
+import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
 import top.inkly.verification_service.infrastructure.output.database.mapper.VerificationInfraMapper;
 import top.inkly.verification_service.infrastructure.output.database.repository.VerificationJpaRepository;
 
