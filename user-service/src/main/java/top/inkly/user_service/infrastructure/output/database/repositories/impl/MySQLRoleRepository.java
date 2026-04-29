@@ -2,7 +2,7 @@ package top.inkly.user_service.infrastructure.output.database.repositories.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import top.inkly.user_service.domain.models.RoleModel;
+import top.inkly.shared.domain.models.user.RoleModel;
 import top.inkly.user_service.domain.ports.output.repositories.RoleRepository;
 import top.inkly.user_service.infrastructure.output.database.mapper.RoleMapperInfra;
 import top.inkly.user_service.infrastructure.output.database.repositories.RoleJpaRepository;

@@ -1,4 +1,4 @@
-package top.inkly.user_service.domain.models.enums;
+package top.inkly.shared.domain.models.user;
 
 public enum RoleNames {
 

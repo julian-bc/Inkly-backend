@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.domain.exceptions.business.RoleNotFoundException;
-import top.inkly.user_service.domain.models.RoleModel;
+import top.inkly.shared.domain.models.user.RoleModel;
 import top.inkly.user_service.domain.ports.output.repositories.RoleRepository;
 
 @Service
