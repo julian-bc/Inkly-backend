@@ -1,7 +1,7 @@
 package top.inkly.view_service.domain.repository;
 
-import top.inkly.shared.domain.PaginationRequest;
-import top.inkly.shared.domain.PaginationResult;
+import top.inkly.shared.domain.pagination.PaginationRequest;
+import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.view_service.domain.models.ViewModel;
 
 public interface ViewRepository {

@@ -1,7 +1,7 @@
 package top.inkly.view_service.application.service;
 
-import top.inkly.shared.domain.PageResponse;
-import top.inkly.shared.domain.PaginationRequest;
+import top.inkly.shared.domain.pagination.PageResponse;
+import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.view_service.domain.models.ViewModel;
 
 public interface IViewService {

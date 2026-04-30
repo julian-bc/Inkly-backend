@@ -59,7 +59,11 @@
 			<version>${org.mapstruct.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<!-- RabbitMQ Message Broker -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
 		<!-- Config Client -->
 		<!--<dependency>
             <groupId>org.springframework.cloud</groupId>

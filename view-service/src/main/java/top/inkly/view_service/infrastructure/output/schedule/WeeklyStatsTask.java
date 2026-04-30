@@ -2,8 +2,11 @@ package top.inkly.view_service.infrastructure.output.schedule;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
-import top.inkly.shared.domain.PageResponse;
-import top.inkly.shared.domain.PaginationRequest;
+import top.inkly.shared.domain.notification.types.NotificationTypes;
+import top.inkly.shared.domain.pagination.PageResponse;
+import top.inkly.shared.domain.pagination.PaginationRequest;
+import top.inkly.shared.infrastructure.input.dto.notification.EmailNotificationRequestDTO;
+import top.inkly.shared.infrastructure.input.dto.notification.NotificationRequestDTO;
 import top.inkly.view_service.application.service.IViewService;
 import top.inkly.view_service.domain.models.ViewModel;
 
@@ -28,7 +31,7 @@ public class WeeklyStatsTask {
 
             for (ViewModel view : views) {
                 // send email
-                processEmail(view.preparedData());
+                processEmail(view.preparedData(), view.getBook().getAuthorEmail());
 
                 // update readerCounter += newReaders, newReaders = 0
                 Long readerCounter = view.getReaderCounter() + view.getNewReaders();
@@ -41,7 +44,19 @@ public class WeeklyStatsTask {
         service.updateViewsCounters();
     }
 
-    private void processEmail(Map<String, String> data) {
-        // sending email to notification-service
+    private void processEmail(Map<String, String> data, String emailReceiver) {
+        NotificationRequestDTO<EmailNotificationRequestDTO> request = NotificationRequestDTO.<EmailNotificationRequestDTO>builder()
+                .notificationType(NotificationTypes.EMAIL)
+                .notificationValues(
+                        EmailNotificationRequestDTO.builder()
+                                .emailReceiver(emailReceiver)
+                                .notificationTemplateId("WEEKLY_UPDATE")
+                                .dataValues(data)
+                                .build()
+                )
+                .build();
+
+        // sending email to notification-service rabbitmq
+
     }
 }
