@@ -1,4 +1,4 @@
-package top.inkly.shared.infrastructure.input.dto.notification;
+package top.inkly.notification_service.domain.filters;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class NotificationRequestDTO<T> {
+public class TemplateFiltersModel {
 
-    private String notificationType;
-    private T notificationData;
+    private String templateName;
+    private String templateSubject;
 
 }

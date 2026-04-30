@@ -6,6 +6,8 @@ import top.inkly.notification_service.domain.models.union.InAppNotificationModel
 import top.inkly.notification_service.infrastructure.output.persistence.entity.EmailTemplateEntity;
 import top.inkly.notification_service.infrastructure.output.persistence.entity.SentNotificationEntity;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface NotificationPersistenceMapper {
 
@@ -14,5 +16,7 @@ public interface NotificationPersistenceMapper {
 
     EmailTemplateModel toModel(EmailTemplateEntity emailTemplateEntity);
     InAppNotificationModel toModel(SentNotificationEntity sentNotificationEntity);
+
+    List<EmailTemplateModel> toModel(List<EmailTemplateEntity> emailTemplateEntities);
 
 }

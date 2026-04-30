@@ -28,3 +28,10 @@ spring:
         connectiontimeout: ${MAIL.TIMEOUT}
         timeout: ${MAIL.TIMEOUT}
         writetimeout: ${MAIL.TIMEOUT}
+  rabbitmq:
+    host: ${AMQP.HOST}
+    port: ${AMQP.PORT}
+    username: ${AMQP.USERNAME}
+    password: ${AMQP.PASSWORD}
+  main:
+    allow-bean-definition-overriding: true
