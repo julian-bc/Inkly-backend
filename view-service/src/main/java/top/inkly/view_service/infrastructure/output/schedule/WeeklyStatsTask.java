@@ -47,7 +47,7 @@ public class WeeklyStatsTask {
     private void processEmail(Map<String, String> data, String emailReceiver) {
         NotificationRequestDTO<EmailNotificationRequestDTO> request = NotificationRequestDTO.<EmailNotificationRequestDTO>builder()
                 .notificationType(NotificationTypes.EMAIL)
-                .notificationValues(
+                .notificationData(
                         EmailNotificationRequestDTO.builder()
                                 .emailReceiver(emailReceiver)
                                 .notificationTemplateId("WEEKLY_UPDATE")
