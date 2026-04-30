@@ -1,4 +1,4 @@
-package top.inkly.shared.domain;
+package top.inkly.shared.domain.pagination;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package top.inkly.user_service.infrastructure.input.rest.mapper;
 
 import org.mapstruct.Mapper;
-import top.inkly.shared.domain.PageResponse;
+import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.CreateUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.PatchUser;

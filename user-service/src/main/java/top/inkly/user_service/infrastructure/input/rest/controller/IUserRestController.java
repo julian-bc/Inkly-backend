@@ -3,7 +3,7 @@ package top.inkly.user_service.infrastructure.input.rest.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import top.inkly.shared.domain.PageResponse;
+import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.CreateUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.PatchUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.UserResponse;
