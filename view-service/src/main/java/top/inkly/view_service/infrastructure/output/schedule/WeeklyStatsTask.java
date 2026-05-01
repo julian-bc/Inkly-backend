@@ -9,6 +9,7 @@ import top.inkly.shared.infrastructure.input.dto.notification.EmailNotificationR
 import top.inkly.shared.infrastructure.input.dto.notification.NotificationRequestDTO;
 import top.inkly.view_service.application.service.IViewService;
 import top.inkly.view_service.domain.models.ViewModel;
+import top.inkly.view_service.domain.ports.output.queues.NotificationPublisherPort;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WeeklyStatsTask {
     private final IViewService service;
+    private final NotificationPublisherPort notificationPublisher;
 
     @Scheduled(cron = "0 30 22 * * MON")
     public void processSendingMassEmails() {
@@ -31,7 +33,7 @@ public class WeeklyStatsTask {
 
             for (ViewModel view : views) {
                 // send email
-                processEmail(view.preparedData(), view.getBook().getAuthorEmail());
+                processEmail(view.preparedData(), view.getEmailReceiver());
 
                 // update readerCounter += newReaders, newReaders = 0
                 Long readerCounter = view.getReaderCounter() + view.getNewReaders();
@@ -57,6 +59,6 @@ public class WeeklyStatsTask {
                 .build();
 
         // sending email to notification-service rabbitmq
-
+        notificationPublisher.publishNotificationMessage(request);
     }
 }

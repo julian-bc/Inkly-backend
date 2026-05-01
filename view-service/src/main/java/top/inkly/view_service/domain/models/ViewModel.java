@@ -17,11 +17,16 @@ public class ViewModel {
     private Long newReaders;
     private BookModel book;
 
+    public String getEmailReceiver() {
+        return book.getAuthorEmail();
+    }
+
     public Map<String, String> preparedData() {
         Map<String, String> data = new HashMap<>();
 
-        data.put("", "");
-        data.put("", "");
+        data.put("readerCounter", String.valueOf(this.readerCounter));
+        data.put("newReaders", String.valueOf(this.newReaders));
+        data.put("bookName", book.getTitle());
 
         return data;
     }
