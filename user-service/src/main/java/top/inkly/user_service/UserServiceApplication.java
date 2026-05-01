@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import top.inkly.user_service.domain.models.enums.RoleNames;
+import top.inkly.shared.domain.models.user.RoleNames;
 import top.inkly.user_service.infrastructure.output.database.entities.RoleEntity;
 import top.inkly.user_service.infrastructure.output.database.entities.UserEntity;
 import top.inkly.user_service.infrastructure.output.database.repositories.RoleJpaRepository;

@@ -23,11 +23,14 @@
     <!-- MICROSERVICES -->
     <modules>
         <module>eureka-server</module>
+
         <module>user-service</module>
+        <module>view-service</module>
+        <module>verification-service</module>
+        <module>notification-service</module>
 
         <!-- SHARED OWN DEPENDENCIES -->
         <module>shared</module>
-        <module>notification-service</module>
     </modules>
 
     <properties>

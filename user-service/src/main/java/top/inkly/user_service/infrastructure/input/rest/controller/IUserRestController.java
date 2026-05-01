@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.CreateUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.PatchUser;
-import top.inkly.user_service.infrastructure.input.rest.dtos.user.UserResponse;
+import top.inkly.shared.infrastructure.input.rest.dtos.user.UserResponse;
 
 import java.util.UUID;
 

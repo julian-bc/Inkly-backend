@@ -1,10 +1,10 @@
-package top.inkly.user_service.infrastructure.input.rest.dtos.user;
+package top.inkly.shared.infrastructure.input.rest.dtos.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import top.inkly.user_service.domain.models.RoleModel;
+import top.inkly.shared.domain.models.user.RoleModel;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
