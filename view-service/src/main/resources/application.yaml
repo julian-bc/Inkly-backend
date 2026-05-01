@@ -5,3 +5,15 @@ spring:
   mongodb:
     uri: ${SERVICE.VIEW.MONGODB_URI}
     database: ${SERVICE.VIEW.MONGODB_DATABASE}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs
