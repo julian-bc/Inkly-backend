@@ -1,4 +1,4 @@
-package top.inkly.user_service.domain.models;
+package top.inkly.shared.domain.models.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -11,7 +11,7 @@ import top.inkly.user_service.application.services.IUserService;
 import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.exceptions.business.FailedDatabaseOperation;
 import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
-import top.inkly.user_service.domain.models.RoleModel;
+import top.inkly.shared.domain.models.user.RoleModel;
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
 import top.inkly.user_service.domain.ports.output.queues.NotificationPublisherPort;
