@@ -1,7 +1,9 @@
 services:
   ### CONFIGURATION MICROSERVICES
   config_server:
-    build: ./config-server
+    build:
+      context: .
+      dockerfile: ./config-server/Dockerfile
     container_name: config_server
     ports:
       - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
