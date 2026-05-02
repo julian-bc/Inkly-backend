@@ -40,6 +40,10 @@ keycloak:
   skip:
     defaultrole: ${KEYCLOAK.SKIP.ROLE}
 
+cloudinary:
+  cloud_name: ${CLOUDINARY.CLOUD.NAME}
+  api_key: ${CLOUDINARY.API.KEY}
+  api_secret: ${CLOUDINARY.API.SECRET}
 
 eureka:
   client:

@@ -3,6 +3,7 @@ package top.inkly.user_service.infrastructure.input.rest.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
 import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.CreateUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.PatchUser;
@@ -36,4 +37,10 @@ public interface IUserRestController {
 
     @Operation(summary = "Deshabilitar usuario", description = "Cambia el estado del usuario a inactivo.")
     void toggleUserStatus(UUID id);
+
+    @Operation(summary = "Actualizar foto de perfil", description = "Sube una imagen a Cloudinary y actualiza la URL en el perfil del usuario. Si ya existe una imagen, esta será reemplazada.")
+    void updateProfileImage(UUID id, MultipartFile file);
+
+    @Operation(summary = "Eliminar foto de perfil", description = "Elimina la imagen física de Cloudinary y limpia la URL en el perfil del usuario.")
+    void deleteProfileImage(UUID id);
 }

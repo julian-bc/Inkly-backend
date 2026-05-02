@@ -1,5 +1,6 @@
 package top.inkly.user_service.application.services;
 
+import org.springframework.web.multipart.MultipartFile;
 import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.user_service.domain.filters.UserFilters;
@@ -13,4 +14,6 @@ public interface IUserService {
     void createUser(UserModel user);
     void updateUser(UUID userId, UserModel userUpdated);
     void toggleUserStatus(UUID userId);
+    void updateProfileImage(UUID userId, MultipartFile profileImage);
+    void deleteProfileImage(UUID userId);
 }
