@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import top.inkly.verification_service.domain.models.enums.VerificationStatus;
 import top.inkly.verification_service.domain.models.enums.VerificationType;
 
 import java.security.SecureRandom;
@@ -21,6 +22,7 @@ public class VerificationModel {
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
     private VerificationType verificationType;
+    private VerificationStatus verificationStatus;
 
     public void generateCode() {
         SecureRandom random = new SecureRandom();
