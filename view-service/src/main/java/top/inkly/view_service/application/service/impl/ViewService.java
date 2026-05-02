@@ -48,6 +48,9 @@ public class ViewService implements IViewService {
 
     @Override
     public void createView(ViewModel newView) {
+        newView.setViewId(UUID.randomUUID().toString());
+        newView.setReaderCounter(0L);
+        newView.setNewReaders(0L);
         repository.save(newView);
     }
 
