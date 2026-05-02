@@ -1,7 +1,10 @@
 services:
+  ### CONFIGURATION MICROSERVICES
   config_server:
     build: ./config-server
     container_name: config_server
+    ports:
+      - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
     env_file:
       - ./.env
 
@@ -9,7 +12,7 @@ services:
     build: ./eureka-server
     container_name: eureka_server
     ports:
-      - "8761:8761"
+      - "${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}"
     depends_on:
       - config_server
 
@@ -17,10 +20,12 @@ services:
     build: ./api-gateway
     container_name: api_gateway
     ports:
-      - "8080:8080"
+      - "${APP_PORT}:${APP_PORT}"
     depends_on:
       - config_server
       - eureka_server
+
+  ### BUSINESS MICROSERVICES
 
   notification_service:
     build: .
