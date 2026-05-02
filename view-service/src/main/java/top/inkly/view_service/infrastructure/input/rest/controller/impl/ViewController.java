@@ -20,9 +20,9 @@ import top.inkly.view_service.infrastructure.input.rest.controller.IViewControll
 public class ViewController implements IViewController {
     private final IViewService service;
 
-    @PatchMapping("/counter")
-    public void counter(@RequestBody ViewModel viewModel) {
-        service.count(viewModel);
+    @PatchMapping("/counter/{bookId}")
+    public void counter(@PathVariable String bookId) {
+        service.count(bookId);
     }
 
     @PostMapping("/create")

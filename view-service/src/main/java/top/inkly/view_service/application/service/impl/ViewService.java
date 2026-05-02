@@ -6,6 +6,7 @@ import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.view_service.application.service.IViewService;
+import top.inkly.view_service.domain.exceptions.ViewNotFoundException;
 import top.inkly.view_service.domain.models.ViewModel;
 import top.inkly.view_service.domain.repository.ViewRepository;
 
@@ -27,21 +28,14 @@ public class ViewService implements IViewService {
     }
 
     @Override
-    public void count(ViewModel view) {
-        String bookTitle = view.getBook().getTitle();
-        ViewModel viewSaved = repository.findByBookTitle(bookTitle);
+    public void count(String bookId) {
+        ViewModel viewSaved = repository.findByBookId(bookId);
 
         if (viewSaved == null) {
-            String viewId = UUID.randomUUID().toString();
-            view.setViewId(viewId);
-            view.setReaderCounter(0L);
-            repository.save(view);
+            throw new ViewNotFoundException("No se pudo cargar la vista de seguimiento del libro.");
         } else {
-            Long newsReaders = view.getNewReaders();
             Long oldCounter = viewSaved.getNewReaders();
-            Long newReadersCounter = oldCounter + newsReaders;
-
-            viewSaved.setNewReaders(newReadersCounter);
+            viewSaved.setNewReaders(oldCounter + 1);
             repository.save(viewSaved);
         }
     }
