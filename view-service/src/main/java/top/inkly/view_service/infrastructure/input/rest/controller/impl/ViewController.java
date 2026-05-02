@@ -3,6 +3,7 @@ package top.inkly.view_service.infrastructure.input.rest.controller.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,16 +14,15 @@ import top.inkly.view_service.application.service.IViewService;
 import top.inkly.view_service.domain.models.ViewModel;
 import top.inkly.view_service.infrastructure.input.rest.controller.IViewController;
 
-
 @RestController
 @RequestMapping("/views")
 @RequiredArgsConstructor
 public class ViewController implements IViewController {
     private final IViewService service;
 
-    @PostMapping
-    public void counter(@RequestBody ViewModel viewModel) {
-        service.count(viewModel);
+    @PatchMapping("/counter/{bookId}")
+    public void counter(@PathVariable String bookId) {
+        service.count(bookId);
     }
 
     @PostMapping("/create")
