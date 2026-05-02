@@ -10,25 +10,42 @@ services:
     container_name: eureka_server
     ports:
       - "8761:8761"
+    depends_on:
+      - config_server
 
   api_gateway:
     build: ./api-gateway
     container_name: api_gateway
     ports:
       - "8080:8080"
+    depends_on:
+      - config_server
+      - eureka_server
 
   notification_service:
     build: .
     container_name: notification_service
+    depends_on:
+      - config_server
+      - eureka_server
 
   user_service:
     build: .
     container_name: user_service
+    depends_on:
+      - config_server
+      - eureka_server
 
   verification_service:
     build: .
     container_name: verification_service
+    depends_on:
+      - config_server
+      - eureka_server
 
   view_service:
     build: .
     container_name: view_service
+    depends_on:
+      - config_server
+      - eureka_server
