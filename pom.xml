@@ -22,6 +22,8 @@
 
     <!-- MICROSERVICES -->
     <modules>
+        <module>api-gateway</module>
+        <module>config-server</module>
         <module>eureka-server</module>
 
         <module>user-service</module>

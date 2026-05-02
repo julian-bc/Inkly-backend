@@ -15,13 +15,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "verifications")
+@Table(name = "T_USER_VERIFICATIONS")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class VerificationEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID verificationId;
     private UUID userId;
     private String code;

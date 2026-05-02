@@ -7,8 +7,8 @@ import top.inkly.shared.infrastructure.input.rest.dtos.user.UserResponse;
 
 import java.util.UUID;
 
-@FeignClient(name = "user", url = "${user.server.url}")
+@FeignClient(name = "user-service")
 public interface UserClient {
-    @GetMapping(value = "${user.server.url}/{userId}")
+    @GetMapping(value = "/users/{userId}")
     UserResponse getUserById(@PathVariable UUID userId);
 }

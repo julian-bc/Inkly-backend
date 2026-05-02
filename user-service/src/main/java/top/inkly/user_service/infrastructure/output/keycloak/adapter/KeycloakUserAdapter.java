@@ -40,7 +40,7 @@ public class KeycloakUserAdapter implements KeycloakConnectorPort {
         try {
             RoleRepresentation inklyUserRole;
             try {
-                inklyUserRole = keycloakRepository.getRoleByName(RoleNames.INKLY_USER.name());
+                inklyUserRole = keycloakRepository.getRoleByName(user.getRole().getRoleName().name());
             } catch (RuntimeException e) {
                 throw new NotFoundKeycloakRoleException("Error Consultando Rol en Keycloak: " + e.getMessage());
             }

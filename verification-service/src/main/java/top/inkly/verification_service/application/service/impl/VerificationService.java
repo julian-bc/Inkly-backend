@@ -47,17 +47,17 @@ public class VerificationService implements IVerificationService {
             throw new VerificationNotFoundException("Código de verificación no existente.");
         }
 
-        if (verificationModel.isExpired()) {
+        if (existingVerification.isExpired()) {
             repository.deleteById(existingVerification.getVerificationId());
             throw new VerificationCodeIsExpiredException("El código de verificación ha caducado.");
         }
 
-        if (verificationModel.getAttempts() == 0) {
+        if (existingVerification.getAttempts() == 0) {
             repository.deleteById(existingVerification.getVerificationId());
             throw new NoAttemptsAvailableException("Número máximo de intentos alcanzado, el código ya no está disponible.");
         }
 
-        if (!verificationModel.isValidCode(verificationModel.getCode())) {
+        if (!existingVerification.isValidCode(verificationModel.getCode())) {
             Integer attempts = existingVerification.getAttempts() - 1;
             existingVerification.setAttempts(attempts);
         }

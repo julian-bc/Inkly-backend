@@ -71,11 +71,10 @@
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 		<!-- Config Client -->
-		<!--<dependency>
+		<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>-->
-
+        </dependency>
 
 		<!-- Inkly Shared Dependencies -->
 		<dependency>
