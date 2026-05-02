@@ -1,4 +1,4 @@
-package top.inkly.notification_service;
+package top.inkly.api_gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class NotificationServiceApplication {
+public class ApiGatewayApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(NotificationServiceApplication.class, args);
+        SpringApplication.run(ApiGatewayApplication.class, args);
     }
+
 }

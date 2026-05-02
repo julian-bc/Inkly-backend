@@ -1,0 +1,40 @@
+spring:
+  config:
+    import: ${CONFIG.SERVER.URL}
+  datasource:
+    url: ${SERVICE.USER.DATABASE.URL}
+    username: ${SERVICE.MYSQL.DATABASE.USER}
+    password: ${SERVICE.MYSQL.DATABASE.PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  main:
+    allow-bean-definition-overriding: true
+
+keycloak:
+  server:
+    url: ${KEYCLOAK.SERVER.URL}
+  client:
+    id: ${KEYCLOAK.CLIENT.ID}
+    secret: ${KEYCLOAK.CLIENT.SECRET}
+  realm: ${KEYCLOAK.REALM}
+  auth:
+    url:
+      login: ${KEYCLOAK.AUTH.LOGIN.URL}
+      logout: ${KEYCLOAK.AUTH.LOGOUT.URL}
+      introspection: ${KEYCLOAK.AUTH.INTROSPECTION.URL}
+  skip:
+    defaultrole: ${KEYCLOAK.SKIP.ROLE}
+
+cloudinary:
+  cloud_name: ${CLOUDINARY.CLOUD.NAME}
+  api_key: ${CLOUDINARY.API.KEY}
+  api_secret: ${CLOUDINARY.API.SECRET}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs

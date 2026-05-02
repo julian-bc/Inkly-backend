@@ -12,3 +12,4 @@ El repositorio [Inkly Core](https://github.com/LiangCamilo/story-service) corres
 - Keycloak
 - RabbitMQ
 - Docker
+

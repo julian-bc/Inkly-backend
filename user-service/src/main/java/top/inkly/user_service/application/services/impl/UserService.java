@@ -20,6 +20,7 @@ import top.inkly.user_service.domain.ports.output.queues.NotificationPublisherPo
 import top.inkly.user_service.domain.ports.output.repositories.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import static top.inkly.user_service.application.services.utils.UserNotificationsBuilder.buildWelcomeNotification;
@@ -53,13 +54,15 @@ public class UserService implements IUserService {
     @Override
     @SneakyThrows
     public void createUser(UserModel user) {
-        RoleModel userRole = roleService.findRole(2);
+        if (Objects.isNull(user.getRole())) {
+            RoleModel userRole = roleService.findRole(2);
+            user.setRole(userRole);
+        }
 
         user.setCreatedAt(LocalDateTime.now());
-        user.setEmailVerified(false);
+        user.setEmailVerified(user.getEmailVerified());
         user.setPasswordVerified(true);
         user.setEnable(true);
-        user.setRole(userRole);
 
         String userId = keycloak.saveKeycloakUser(user);
         user.setUserId(UUID.fromString(userId));

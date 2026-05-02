@@ -1,0 +1,34 @@
+server:
+  port: 0
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK.REALM.ISSUER}
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: ${AMQP.HOST}
+    port: ${AMQP.PORT}
+    username: ${AMQP.USERNAME}
+    password: ${AMQP.PASSWORD}
+
+logging:
+  pattern:
+    dateformat: hh:mm
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG

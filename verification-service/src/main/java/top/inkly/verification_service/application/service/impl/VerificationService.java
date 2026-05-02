@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import top.inkly.verification_service.application.service.IVerificationService;
 import top.inkly.verification_service.domain.exceptions.business.NoAttemptsAvailableException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationCodeIsExpiredException;
+import top.inkly.verification_service.domain.exceptions.business.VerificationInvalidCodeException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationNotFoundException;
 import top.inkly.verification_service.domain.models.VerificationModel;
+import top.inkly.verification_service.domain.models.enums.VerificationStatus;
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
 import top.inkly.verification_service.domain.ports.output.user.UserConnectorPort;
 
@@ -33,6 +35,7 @@ public class VerificationService implements IVerificationService {
        verificationModel.generateCode();
        verificationModel.setAttempts(5);
        verificationModel.loadDates();
+       verificationModel.setVerificationStatus(VerificationStatus.WAITING);
        repository.save(verificationModel);
     }
 
@@ -43,23 +46,29 @@ public class VerificationService implements IVerificationService {
                 verificationModel.getVerificationType()
         );
 
-        if (existingVerification == null) {
+        if (existingVerification == null ||
+                !existingVerification.getVerificationStatus().name().equals(VerificationStatus.WAITING.name())) {
             throw new VerificationNotFoundException("Código de verificación no existente.");
         }
 
-        if (verificationModel.isExpired()) {
+        if (existingVerification.isExpired()) {
             repository.deleteById(existingVerification.getVerificationId());
             throw new VerificationCodeIsExpiredException("El código de verificación ha caducado.");
         }
 
-        if (verificationModel.getAttempts() == 0) {
+        if (existingVerification.getAttempts() == 0) {
             repository.deleteById(existingVerification.getVerificationId());
             throw new NoAttemptsAvailableException("Número máximo de intentos alcanzado, el código ya no está disponible.");
         }
 
-        if (!verificationModel.isValidCode(verificationModel.getCode())) {
+        if (!existingVerification.isValidCode(verificationModel.getCode())) {
             Integer attempts = existingVerification.getAttempts() - 1;
             existingVerification.setAttempts(attempts);
+            repository.save(existingVerification);
+            throw new VerificationInvalidCodeException("Código Invalido");
+        } else {
+            existingVerification.setVerificationStatus(VerificationStatus.VERIFIED);
+            repository.save(existingVerification);
         }
     }
 }

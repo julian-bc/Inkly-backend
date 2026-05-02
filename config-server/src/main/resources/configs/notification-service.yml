@@ -1,0 +1,34 @@
+spring:
+  config:
+    import: ${CONFIG.SERVER.URL}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SERVICE.NOTIFICATION.DATABASE.URL}
+    username: ${SERVICE.MYSQL.DATABASE.USER}
+    password: ${SERVICE.MYSQL.DATABASE.PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+  main:
+    allow-bean-definition-overriding: true
+  mail:
+    host: ${MAIL.HOST}
+    port: ${MAIL.PORT}
+    username: ${MAIL.USERNAME}
+    password: ${MAIL.PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL.AUTH}
+          starttls:
+            enable: ${MAIL.ENABLE.TLS}
+        connectiontimeout: ${MAIL.TIMEOUT}
+        timeout: ${MAIL.TIMEOUT}
+        writetimeout: ${MAIL.TIMEOUT}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs

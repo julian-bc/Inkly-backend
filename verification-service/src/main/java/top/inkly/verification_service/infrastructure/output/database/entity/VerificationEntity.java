@@ -9,19 +9,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import top.inkly.verification_service.domain.models.enums.VerificationStatus;
 import top.inkly.verification_service.domain.models.enums.VerificationType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "verifications")
+@Table(name = "T_USER_VERIFICATIONS")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class VerificationEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID verificationId;
     private UUID userId;
     private String code;
@@ -29,4 +31,5 @@ public class VerificationEntity {
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
     private VerificationType verificationType;
+    private VerificationStatus verificationStatus;
 }
