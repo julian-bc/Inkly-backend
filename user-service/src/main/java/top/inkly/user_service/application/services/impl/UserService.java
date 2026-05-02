@@ -3,7 +3,7 @@ package top.inkly.user_service.application.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import top.inkly.shared.domain.models.user.RoleNames;
+import org.springframework.web.multipart.MultipartFile;
 import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.shared.domain.pagination.PaginationResult;
@@ -14,6 +14,7 @@ import top.inkly.user_service.domain.exceptions.business.FailedDatabaseOperation
 import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
 import top.inkly.shared.domain.models.user.RoleModel;
 import top.inkly.user_service.domain.models.UserModel;
+import top.inkly.user_service.domain.ports.output.cloudinary.CloudinaryConnectorPort;
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
 import top.inkly.user_service.domain.ports.output.queues.NotificationPublisherPort;
 import top.inkly.user_service.domain.ports.output.repositories.UserRepository;
@@ -32,6 +33,7 @@ public class UserService implements IUserService {
     private final IRoleService roleService;
     private final KeycloakConnectorPort keycloak;
     private final NotificationPublisherPort notificationPublisher;
+    private final CloudinaryConnectorPort cloudinaryConnectorPort;
 
     @Override
     public PageResponse<UserModel> findUsers(PaginationRequest request, UserFilters filters) {
@@ -105,6 +107,33 @@ public class UserService implements IUserService {
         userSaved.setUpdatedAt(LocalDateTime.now());
 
         keycloak.changeKeycloakUserStatus(userId.toString());
+        repository.save(userSaved);
+    }
+
+    @Override
+    public void updateProfileImage(UUID userId, MultipartFile profileImage) {
+        UserModel userSaved = this.findUser(userId);
+        String profileImageUrl = userSaved.getProfileImageUrl();
+
+        if (profileImageUrl != null) {
+            cloudinaryConnectorPort.deleteFile(profileImageUrl);
+        }
+
+        profileImageUrl = cloudinaryConnectorPort.uploadFile(profileImage);
+        userSaved.setProfileImageUrl(profileImageUrl);
+        userSaved.setUpdatedAt(LocalDateTime.now());
+
+        repository.save(userSaved);
+    }
+
+    @Override
+    public void deleteProfileImage(UUID userId) {
+        UserModel userSaved = this.findUser(userId);
+
+        cloudinaryConnectorPort.deleteFile(userSaved.getProfileImageUrl());
+        userSaved.setProfileImageUrl(null);
+        userSaved.setUpdatedAt(LocalDateTime.now());
+
         repository.save(userSaved);
     }
 }

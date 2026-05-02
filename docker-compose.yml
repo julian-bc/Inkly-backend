@@ -1,17 +1,51 @@
 services:
-  rabbitmq:
-    image: rabbitmq:4-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin1234
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-      - rabbitmq_log:/var/log/rabbitmq
+  config_server:
+    build: ./config-server
+    container_name: config_server
+    env_file:
+      - ./.env
 
-volumes:
-  rabbitmq_data:
-  rabbitmq_log:
+  eureka_server:
+    build: ./eureka-server
+    container_name: eureka_server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config_server
+
+  api_gateway:
+    build: ./api-gateway
+    container_name: api_gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config_server
+      - eureka_server
+
+  notification_service:
+    build: .
+    container_name: notification_service
+    depends_on:
+      - config_server
+      - eureka_server
+
+  user_service:
+    build: .
+    container_name: user_service
+    depends_on:
+      - config_server
+      - eureka_server
+
+  verification_service:
+    build: .
+    container_name: verification_service
+    depends_on:
+      - config_server
+      - eureka_server
+
+  view_service:
+    build: .
+    container_name: view_service
+    depends_on:
+      - config_server
+      - eureka_server

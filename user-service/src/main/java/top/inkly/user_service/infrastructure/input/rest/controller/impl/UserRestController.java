@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.user_service.application.services.IUserService;
@@ -67,5 +69,15 @@ public class UserRestController implements IUserRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void toggleUserStatus(@PathVariable UUID id) {
         service.toggleUserStatus(id);
+    }
+
+    @PutMapping("/{id}/update-image")
+    public void updateProfileImage(@PathVariable UUID id, @RequestParam("file")MultipartFile file) {
+        service.updateProfileImage(id, file);
+    }
+
+    @PutMapping("/{id}/delete-image")
+    public void deleteProfileImage(@PathVariable UUID id) {
+        service.deleteProfileImage(id);
     }
 }

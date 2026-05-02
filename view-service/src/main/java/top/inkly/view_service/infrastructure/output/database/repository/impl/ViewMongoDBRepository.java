@@ -50,9 +50,9 @@ public class ViewMongoDBRepository implements ViewRepository {
     }
 
     @Override
-    public ViewModel findByBookTitle(String bookTitle) {
+    public ViewModel findByBookId(String bookTitle) {
         return mapper.toDomain(mongoRepository
-                .findByBook_Title(bookTitle));
+                .findByBook_BookId(bookTitle));
     }
 
     @Override

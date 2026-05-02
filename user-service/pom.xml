@@ -68,6 +68,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http5</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
         <!-- Config Client -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
