@@ -8,7 +8,7 @@ services:
     ports:
       - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
     env_file:
-      - ./.env
+      - ./.env.prod
 
   eureka-server:
     build:
@@ -20,7 +20,7 @@ services:
     depends_on:
       - config-server
     env_file:
-      - ./.env
+      - ./.env.prod
 
   api_gateway:
     build:
@@ -33,7 +33,7 @@ services:
       - config-server
       - eureka-server
     env_file:
-      - ./.env
+      - ./.env.prod
 
   ### BUSINESS MICROSERVICES
 
@@ -48,7 +48,7 @@ services:
       - config-server
       - eureka-server
     env_file:
-      - ./.env
+      - ./.env.prod
 
   user_service:
     build:
@@ -61,7 +61,7 @@ services:
       - config-server
       - eureka-server
     env_file:
-      - ./.env
+      - ./.env.prod
 
   verification_service:
     build:
@@ -74,7 +74,7 @@ services:
       - config-server
       - eureka-server
     env_file:
-      - ./.env
+      - ./.env.prod
 
   view_service:
     build:
@@ -87,4 +87,4 @@ services:
       - config-server
       - eureka-server
     env_file:
-      - ./.env
+      - ./.env.prod

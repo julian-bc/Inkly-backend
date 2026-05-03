@@ -1,6 +1,4 @@
 spring:
-  config:
-    import: ${CONFIG.SERVER.URL}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${SERVICE.NOTIFICATION.DATABASE.URL}

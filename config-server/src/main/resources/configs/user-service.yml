@@ -1,6 +1,4 @@
 spring:
-  config:
-    import: ${CONFIG.SERVER.URL}
   datasource:
     url: ${SERVICE.USER.DATABASE.URL}
     username: ${SERVICE.MYSQL.DATABASE.USER}
@@ -28,9 +26,9 @@ keycloak:
     defaultrole: ${KEYCLOAK.SKIP.ROLE}
 
 cloudinary:
-  cloud_name: ${CLOUDINARY.CLOUD.NAME}
-  api_key: ${CLOUDINARY.API.KEY}
-  api_secret: ${CLOUDINARY.API.SECRET}
+  cloud_name: ${CLOUDINARY_CLOUD_NAME_SPRING}
+  api_key: ${CLOUDINARY_API_KEY_SPRING}
+  api_secret: ${CLOUDINARY_API_SECRET_SPRING}
 
 springdoc:
   swagger-ui:

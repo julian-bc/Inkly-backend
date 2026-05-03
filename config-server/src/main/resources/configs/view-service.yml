@@ -1,6 +1,4 @@
 spring:
-  config:
-    import: ${CONFIG.SERVER.URL}
   mongodb:
     uri: ${SERVICE.VIEW.MONGODB_URI}
     database: ${SERVICE.VIEW.MONGODB_DB}

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${APP_PORT}
 
 spring:
   cloud:
@@ -32,14 +32,14 @@ spring:
             #
             ### Discovery Service Route
             - id: discovery-service
-              uri: ${EUREKA_SERVER_URL:http://localhost:8761}
+              uri: ${EUREKA_SERVER_URL}
               predicates:
                 - Path=/eureka/web,/eureka/web/
               filters:
                 - SetPath=/
             ### Discovery Service Static Resources Route
             - id: discovery-service-static
-              uri: ${EUREKA_SERVER_URL:http://localhost:8761}
+              uri: ${EUREKA_SERVER_URL}
               predicates:
                 - Path=/eureka/**
   security:

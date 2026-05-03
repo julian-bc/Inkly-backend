@@ -1,6 +1,4 @@
 spring:
-  config:
-    import: ${CONFIG.SERVER.URL}
   datasource:
     url: ${SERVICE.VERIFICATION.DATABASE.URL}
     username: ${SERVICE.MYSQL.DATABASE.USER}
