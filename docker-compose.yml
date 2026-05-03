@@ -1,58 +1,90 @@
 services:
   ### CONFIGURATION MICROSERVICES
-  config_server:
+  config-server:
     build:
       context: .
       dockerfile: ./config-server/Dockerfile
-    container_name: config_server
+    container_name: config-server
     ports:
       - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
     env_file:
       - ./.env
 
-  eureka_server:
-    build: ./eureka-server
-    container_name: eureka_server
+  eureka-server:
+    build:
+      context: .
+      dockerfile: ./eureka-server/Dockerfile
+    container_name: eureka-server
     ports:
       - "${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}"
     depends_on:
-      - config_server
+      - config-server
+    env_file:
+      - ./.env
 
   api_gateway:
-    build: ./api-gateway
-    container_name: api_gateway
+    build:
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
+    container_name: api-gateway
     ports:
       - "${APP_PORT}:${APP_PORT}"
     depends_on:
-      - config_server
-      - eureka_server
+      - config-server
+      - eureka-server
+    env_file:
+      - ./.env
 
   ### BUSINESS MICROSERVICES
 
   notification_service:
-    build: .
-    container_name: notification_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: notification-service
+    container_name: notification-service
     depends_on:
-      - config_server
-      - eureka_server
+      - config-server
+      - eureka-server
+    env_file:
+      - ./.env
 
   user_service:
-    build: .
-    container_name: user_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: user-service
+    container_name: user-service
     depends_on:
-      - config_server
-      - eureka_server
+      - config-server
+      - eureka-server
+    env_file:
+      - ./.env
 
   verification_service:
-    build: .
-    container_name: verification_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: verification-service
+    container_name: verification-service
     depends_on:
-      - config_server
-      - eureka_server
+      - config-server
+      - eureka-server
+    env_file:
+      - ./.env
 
   view_service:
-    build: .
-    container_name: view_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: view-service
+    container_name: view-service
     depends_on:
-      - config_server
-      - eureka_server
+      - config-server
+      - eureka-server
+    env_file:
+      - ./.env
