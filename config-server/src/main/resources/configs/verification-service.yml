@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${SERVICE.VERIFICATION.DATABASE.URL}
-    username: ${SERVICE.MYSQL.DATABASE.USER}
-    password: ${SERVICE.MYSQL.DATABASE.PASSWORD}
+    url: ${SERVICE_VERIFICATION_DATABASE_URL}
+    username: ${SERVICE_MYSQL_DATABASE_USER}
+    password: ${SERVICE_MYSQL_DATABASE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

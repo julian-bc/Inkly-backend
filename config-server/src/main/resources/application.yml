@@ -11,14 +11,15 @@ spring:
       server:
         native:
           search-locations: classpath:/configs
+      enabled: false
 management:
-  endpoint:
-    env:
-      show-values: ALWAYS
   endpoints:
     web:
       exposure:
-        include: "env"
+        include: health
+  endpoint:
+    health:
+      show-details: always
 
 keycloak:
-  realm: ${KEYCLOAK.REALM}
+  realm: ${KEYCLOAK_REALM}

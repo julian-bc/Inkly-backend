@@ -1,7 +1,7 @@
 spring:
   mongodb:
-    uri: ${SERVICE.VIEW.MONGODB_URI}
-    database: ${SERVICE.VIEW.MONGODB_DB}
+    uri: ${SERVICE_VIEW_MONGODB_URI}
+    database: ${SERVICE_VIEW_MONGODB_DB}
   main:
     allow-bean-definition-overriding: true
 

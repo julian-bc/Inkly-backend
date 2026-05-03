@@ -17,14 +17,14 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK.REALM.ISSUER}
+          issuer-uri: ${KEYCLOAK_REALM_ISSUER}
   main:
     allow-bean-definition-overriding: true
   rabbitmq:
-    host: ${AMQP.HOST}
-    port: ${AMQP.PORT}
-    username: ${AMQP.USERNAME}
-    password: ${AMQP.PASSWORD}
+    host: ${AMQP_HOST}
+    port: ${AMQP_PORT}
+    username: ${AMQP_USERNAME}
+    password: ${AMQP_PASSWORD}
 
 logging:
   pattern:
