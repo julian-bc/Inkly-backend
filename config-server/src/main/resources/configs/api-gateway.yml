@@ -13,6 +13,7 @@ spring:
               uri: lb://user-service
               predicates:
                 - Path=/users/**
+                - Path=/auth/**
             ### Notification Service Route
             - id: notification-service
               uri: lb://notification-service
