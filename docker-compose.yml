@@ -126,7 +126,7 @@ services:
     env_file:
       - ${ENV_FILE}
 
-  story-service:
+  story_service:
     build:
       context: .
       dockerfile: ./story-service/Dockerfile
