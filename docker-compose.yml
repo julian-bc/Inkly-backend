@@ -125,3 +125,18 @@ services:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
+
+  story-service:
+    build:
+      context: .
+      dockerfile: ./story-service/Dockerfile
+    container_name: story-service
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      api_gateway:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
