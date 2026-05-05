@@ -1,3 +1,4 @@
+FROM node:25-alpine AS builder
 # Install Git
 RUN apk add --no-cache git
 WORKDIR /source
