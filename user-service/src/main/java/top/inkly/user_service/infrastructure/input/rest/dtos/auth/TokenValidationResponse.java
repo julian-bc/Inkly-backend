@@ -11,5 +11,6 @@ import lombok.Setter;
 public class TokenValidationResponse {
 
     private boolean active;
+    private String userId;
 
 }

@@ -42,7 +42,8 @@ public class AuthService implements IAuthService {
     public TokenValidationModel validateToken(String token) {
         Map<String, Object> validationResponse = auth.validateToken(token);
         return new TokenValidationModel(
-                (boolean) validationResponse.get(Constants.ACTIVE)
+                (boolean) validationResponse.get(Constants.ACTIVE),
+                (String) validationResponse.get(Constants.SUB)
         );
     }
 

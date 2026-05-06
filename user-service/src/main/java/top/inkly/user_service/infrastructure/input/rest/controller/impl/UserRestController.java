@@ -2,11 +2,11 @@ package top.inkly.user_service.infrastructure.input.rest.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,13 +71,14 @@ public class UserRestController implements IUserRestController {
         service.toggleUserStatus(id);
     }
 
-    @PutMapping("/{id}/update-image")
+    @PatchMapping("/{id}/update-image")
     public void updateProfileImage(@PathVariable UUID id, @RequestParam("file")MultipartFile file) {
         service.updateProfileImage(id, file);
     }
 
-    @PutMapping("/{id}/delete-image")
+    @DeleteMapping("/{id}/delete-image")
     public void deleteProfileImage(@PathVariable UUID id) {
         service.deleteProfileImage(id);
     }
+
 }

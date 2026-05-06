@@ -12,14 +12,12 @@ spring:
             - id: user-service
               uri: lb://user-service
               predicates:
-                - Path=/users/**
-                - Path=/auth/**
+                - Path=/users/**,/auth/**
             ### Notification Service Route
             - id: notification-service
               uri: lb://notification-service
               predicates:
-                - Path=/notifications/**
-                - Path=/templates/**
+                - Path=/notifications/**,/templates/**
             ### Views Service Route
             - id: view-service
               uri: lb://view-service

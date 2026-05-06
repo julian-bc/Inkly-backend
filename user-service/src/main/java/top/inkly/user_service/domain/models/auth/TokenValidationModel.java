@@ -13,5 +13,6 @@ import java.time.LocalDateTime;
 public class TokenValidationModel {
 
     private boolean active;
+    private String userId;
 
 }

@@ -14,6 +14,7 @@ import top.inkly.user_service.application.services.IAuthService;
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
 import top.inkly.user_service.domain.models.auth.LoginResponseModel;
 import top.inkly.user_service.domain.models.auth.SessionResponseModel;
+import top.inkly.user_service.domain.models.auth.TokenValidationModel;
 import top.inkly.user_service.domain.shared.Constants;
 import top.inkly.user_service.infrastructure.input.rest.dtos.auth.LoginRequest;
 import top.inkly.user_service.infrastructure.input.rest.dtos.auth.LoginResponse;
@@ -72,7 +73,9 @@ public class AuthRestController {
         TokenValidationResponse tokenValidation = new TokenValidationResponse();
 
         if (accessToken != null) {
-            tokenValidation.setActive(authService.validateToken(accessToken).isActive());
+            TokenValidationModel validationResponse = authService.validateToken(accessToken);
+            tokenValidation.setActive(validationResponse.isActive());
+            tokenValidation.setUserId(validationResponse.getUserId());
         } else {
             tokenValidation.setActive(false);
         }
@@ -87,7 +90,9 @@ public class AuthRestController {
         TokenValidationResponse tokenValidation = new TokenValidationResponse();
 
         if (refreshToken != null) {
-            tokenValidation.setActive(authService.validateToken(refreshToken).isActive());
+            TokenValidationModel validationResponse = authService.validateToken(refreshToken);
+            tokenValidation.setActive(validationResponse.isActive());
+            tokenValidation.setUserId(validationResponse.getUserId());
         } else {
             tokenValidation.setActive(false);
         }

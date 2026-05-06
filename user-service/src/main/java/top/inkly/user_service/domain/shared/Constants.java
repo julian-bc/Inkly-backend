@@ -18,6 +18,7 @@ public class Constants {
     public static final String REFRESH_TOKEN = "refreshToken";
     // Validation Response
     public static final String ACTIVE = "active";
+    public static final String SUB = "sub";
 
     // COOKIES Constants
     public static final boolean HTTP_ONLY = true;
