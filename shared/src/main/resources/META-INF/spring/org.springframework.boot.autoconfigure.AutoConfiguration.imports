@@ -1,2 +1,4 @@
 top.inkly.shared.infrastructure.output.queues.config.RabbitMQConfig
 top.inkly.shared.infrastructure.input.handler.GlobalExceptionHandler
+top.inkly.shared.infrastructure.output.user.adapter.UserAdapter
+top.inkly.shared.infrastructure.output.user.client.UserClient

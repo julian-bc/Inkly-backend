@@ -10,7 +10,7 @@ import top.inkly.verification_service.domain.exceptions.business.VerificationNot
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
-import top.inkly.verification_service.domain.ports.output.user.UserConnectorPort;
+import top.inkly.shared.domain.ports.output.user.UserConnectorPort;
 
 @Service
 @RequiredArgsConstructor

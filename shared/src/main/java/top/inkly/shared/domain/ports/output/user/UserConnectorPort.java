@@ -1,4 +1,4 @@
-package top.inkly.verification_service.domain.ports.output.user;
+package top.inkly.shared.domain.ports.output.user;
 
 import java.util.UUID;
 

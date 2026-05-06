@@ -1,11 +1,11 @@
-package top.inkly.verification_service.infrastructure.output.user.adapter;
+package top.inkly.shared.infrastructure.output.user.adapter;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import top.inkly.verification_service.domain.exceptions.user.UserNotFoundException;
-import top.inkly.verification_service.domain.ports.output.user.UserConnectorPort;
-import top.inkly.verification_service.infrastructure.output.user.client.UserClient;
+import top.inkly.shared.domain.exceptions.user.UserNotFoundException;
+import top.inkly.shared.domain.ports.output.user.UserConnectorPort;
+import top.inkly.shared.infrastructure.output.user.client.UserClient;
 
 import java.util.UUID;
 
