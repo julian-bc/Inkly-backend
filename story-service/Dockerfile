@@ -1,23 +1,31 @@
-FROM node:25-alpine AS builder
+FROM node:24-alpine AS builder
 # Install Git
 RUN apk add --no-cache git
-WORKDIR /source
+
+WORKDIR /repo
 # Clone repository
 RUN git clone https://github.com/LiangCamilo/story-service.git .
-# Install dependencies and generate dist code
-RUN npm install
-RUN npx prisma generate && npm run build
 
+WORKDIR /app
+
+RUN cp -a /repo/. /app/
+# Install dependencies and generate dist code
+RUN npm ci
+RUN npx prisma generate --config ./prisma.config.ts
+RUN npm run build
+
+RUN npm prune --omit=dev
 # Final Image
-FROM node:25-alpine
+FROM node:24-alpine AS runner
+
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 # Copy src code, package.json and prisma
-COPY --from=builder /source/dist ./dist
-COPY --from=builder /source/package*.json ./
-COPY --from=builder /source/prisma ./prisma
-# Install deppendencies without devDependencies
-RUN npm install --omit=dev
-# Database synchronization
-RUN npx prisma migrate deploy
+COPY --from=builder --chown=node:node /app/package*.json ./
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/dist ./dist
+COPY --from=builder --chown=node:node /app/prisma ./prisma
+COPY --from=builder --chown=node:node /app/prisma.config.ts ./prisma.config.ts
 
-CMD ["node", "dist/src/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy --config ./prisma.config.ts && node dist/src/main.js"]
