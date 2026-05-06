@@ -50,7 +50,7 @@ public class UserServiceApplication {
                 admin.setUserName("admin_inkly");
                 admin.setEmail("admin@inkly.top");
                 admin.setPassword("Inkly_Admin_1234");
-                admin.setRole(new RoleModel(2, RoleNames.INKLY_ADMIN));
+                admin.setRole(new RoleModel(1, RoleNames.INKLY_ADMIN));
                 admin.setEmailVerified(true);
                 admin.setPasswordVerified(true);
                 admin.setEnable(true);
