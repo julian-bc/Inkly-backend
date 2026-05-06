@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import top.inkly.view_service.application.service.IViewService;
-import top.inkly.view_service.domain.models.ViewModel;
 import top.inkly.view_service.infrastructure.input.rest.controller.IViewController;
+import top.inkly.view_service.infrastructure.input.rest.dtos.ViewCreateRequest;
 
 @RestController
 @RequestMapping("/views")
@@ -27,8 +27,12 @@ public class ViewController implements IViewController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createView(@RequestBody ViewModel viewModel) {
-        service.createView(viewModel);
+    public void createView(@RequestBody ViewCreateRequest viewCreateRequest) {
+        service.createView(
+                viewCreateRequest.getBookId(),
+                viewCreateRequest.getTitle(),
+                viewCreateRequest.getAuthorId()
+        );
     }
 
     @DeleteMapping("/{bookId}")
