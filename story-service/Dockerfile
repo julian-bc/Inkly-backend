@@ -4,7 +4,7 @@ RUN apk add --no-cache git
 
 WORKDIR /repo
 # Clone repository
-RUN git clone https://github.com/LiangCamilo/story-service.git .
+RUN git clone --depth 1 https://github.com/LiangCamilo/story-service.git .
 
 WORKDIR /app
 
