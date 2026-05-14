@@ -71,11 +71,14 @@ public class KeycloakUserAdapter implements KeycloakConnectorPort {
 
     @Override
     public UserModel getKeycloakUserById(String userId) throws FailedKeycloakOperationException, NotFoundKeycloakUserException {
-        UserRepresentation userFromKeycloak = keycloakRepository.getById(userId);
-        if (userFromKeycloak == null) {
-            throw new NotFoundKeycloakUserException(userId);
-        }
-        return mapper.toModel(userFromKeycloak);
+        return mapper.toModel(findUserFromKeycloakById(userId));
+    }
+
+    @Override
+    public void updateForgottenPassword(String userId, String newPassword) {
+        UserRepresentation userFromKeycloak = this.findUserFromKeycloakById(userId);
+        assignCredentials(userFromKeycloak, newPassword);
+        keycloakRepository.update(userId, userFromKeycloak);
     }
 
     @Override
@@ -114,6 +117,14 @@ public class KeycloakUserAdapter implements KeycloakConnectorPort {
         } catch (RuntimeException e) {
             throw new FailedKeycloakOperationException(e.getMessage());
         }
+    }
+
+    private UserRepresentation findUserFromKeycloakById(String userId) {
+        UserRepresentation userFromKeycloak = keycloakRepository.getById(userId);
+        if (userFromKeycloak == null) {
+            throw new NotFoundKeycloakUserException(userId);
+        }
+        return userFromKeycloak;
     }
 
     private void assignCredentials(UserRepresentation user, String password) {

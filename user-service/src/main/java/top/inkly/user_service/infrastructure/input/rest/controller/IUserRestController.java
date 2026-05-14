@@ -8,6 +8,7 @@ import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.CreateUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.PatchUser;
 import top.inkly.shared.infrastructure.input.rest.dtos.user.UserResponse;
+import top.inkly.user_service.infrastructure.input.rest.dtos.user.UpdatePasswordRequest;
 
 import java.util.UUID;
 
@@ -43,4 +44,7 @@ public interface IUserRestController {
 
     @Operation(summary = "Eliminar foto de perfil", description = "Elimina la imagen física de Cloudinary y limpia la URL en el perfil del usuario.")
     void deleteProfileImage(UUID id);
+
+    @Operation(summary = "Actualizar contraseña olvidada", description = "Permite a un usuario restablecer su contraseña proporcionando su ID y una nueva contraseña válida.")
+    void updateForgottenPassword(UUID userId, UpdatePasswordRequest passwordRequest);
 }
