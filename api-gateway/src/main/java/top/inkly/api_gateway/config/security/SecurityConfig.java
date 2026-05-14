@@ -4,7 +4,6 @@ import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +11,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,17 +25,18 @@ public class SecurityConfig {
 
     private final KeycloakAuthConverter authConverter;
 
-    @Order(1)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(
                                 "/auth/login",
                                 "/auth/validate/access",
                                 "/auth/validate/session",
-                                "/auth/refresh-session"
+                                "/auth/refresh-session",
+                                "/auth/logout"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
@@ -47,30 +50,19 @@ public class SecurityConfig {
                                 "/users",
                                 "/users/{id}",
                                 "/api/story/search",
+                                "/api/story/id/{storyId}",
                                 "/api/genre",
-                                "/api/",
                                 "/api/chapter/{storyId}",
                                 "/api/tag/search"
                         ).permitAll()
-                ).build();
-    }
-
-    @Order(2)
-    @Bean
-    public SecurityFilterChain securityFilterChain2(HttpSecurity http) {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> req
-                        .requestMatchers(
-                                "/auth/logout"
-                        ).authenticated()
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/story/create",
                                 "/api/chapter/create",
                                 "/api/view/create",
                                 "/api/rating/create",
-                                "/api/favorite/add"
+                                "/api/favorite/add",
+                                "/api/comment/create"
                         )
                         .authenticated()
                         .requestMatchers(
@@ -81,7 +73,9 @@ public class SecurityConfig {
                                 "/api/story/cover/{id}",
                                 "/api/story/toggle-hidden/{id}",
                                 "/api/chapter/toggle-hidden/{id}",
-                                "/api/chapter/update/{id}"
+                                "/api/chapter/update/{id}",
+                                "/api/comment/update/{commentId}",
+                                "/api/comment/toggle-like/{commentId}/{userId}"
                         ).authenticated()
                         .requestMatchers(
                                 HttpMethod.DELETE,
@@ -90,7 +84,8 @@ public class SecurityConfig {
                                 "/api/story/cover/{id}",
                                 "/api/chapter/{storyId}/chapter/{chapterId}",
                                 "/api/favorite",
-                                "/api/favorite/remove/{userId}/{storyId}"
+                                "/api/favorite/remove/{userId}/{storyId}",
+                                "/api/comment/{commentId}"
                         ).authenticated()
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -98,30 +93,47 @@ public class SecurityConfig {
                                 "/api/story/last-modified/{userId}",
                                 "/api/chapter/my-chapters/{storyId}",
                                 "/api/favorite/search/{userId}",
-                                "/api/tag/search"
+                                "/api/tag/search",
+                                "/api/comment/search/story/{storyId}",
+                                "/api/comment/search/chapter/{chapterId}"
                         ).authenticated()
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/story/update/{id}"
-                        )
+                        ).authenticated()
+                        .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth -> oauth
                         .bearerTokenResolver(cookieAccessTokenResolver())
                         .jwt(jwtConfigurer -> jwtConfigurer
-                                .jwtAuthenticationConverter(jwtToken -> {
-                                    return new JwtAuthenticationToken(jwtToken, authConverter.convert(jwtToken));
-                                })))
+                                .jwtAuthenticationConverter(jwtToken -> new JwtAuthenticationToken(jwtToken, authConverter.convert(jwtToken))))
+                )
                 .build();
     }
 
     private BearerTokenResolver cookieAccessTokenResolver() {
         return request -> {
-            List<Cookie> cookies = Arrays.asList(request.getCookies());
-            return cookies.stream()
+            Cookie[] cookies = request.getCookies();
+            if (cookies == null) return null;
+
+            return Arrays.stream(cookies)
                     .filter(cookie -> cookie.getName().equals("access_token"))
                     .map(Cookie::getValue)
                     .findAny().orElse(null);
         };
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }

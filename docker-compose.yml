@@ -82,13 +82,6 @@ services:
       args:
         SERVICE_FOLDER: user-service
     container_name: user-service
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-      api_gateway:
-        condition: service_healthy
     env_file:
       - ${ENV_FILE}
 
@@ -131,12 +124,5 @@ services:
       context: .
       dockerfile: ./story-service/Dockerfile
     container_name: story-service
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-      api_gateway:
-        condition: service_healthy
     env_file:
       - ${ENV_FILE}

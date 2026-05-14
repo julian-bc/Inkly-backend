@@ -32,7 +32,7 @@ spring:
             - id: story-service
               uri: lb://story-service
               predicates:
-                - Path=/api/story/**,/api/genre/**,/api/chapter/**,/api/view/**,/api/rating/**,/favorite/**
+                - Path=/api/story/**,/api/genre/**,/api/chapter/**,/api/view/**,/api/rating/**,/api/favorite/**,/api/tag/**,/api/comment/**
             ### Discovery Service Route
             - id: discovery-service
               uri: ${EUREKA_SERVER_URL}
