@@ -101,6 +101,14 @@ public class SecurityConfig {
                                 HttpMethod.PUT,
                                 "/api/story/update/{id}"
                         ).authenticated()
+                        // Secure by Role Endpoints
+                        .requestMatchers(
+                                "/templates/**"
+                        ).hasRole("INKLY_ADMIN")
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/notifications"
+                        ).hasRole("INKLY_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth -> oauth

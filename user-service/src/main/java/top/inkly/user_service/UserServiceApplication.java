@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import top.inkly.shared.domain.models.user.RoleModel;
 import top.inkly.shared.domain.models.user.RoleNames;
+import top.inkly.shared.infrastructure.config.EnableRabbitMQ;
 import top.inkly.user_service.application.services.impl.UserService;
 import top.inkly.user_service.domain.models.UserModel;
 import top.inkly.user_service.infrastructure.output.database.entities.RoleEntity;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @EnableFeignClients
 @EnableDiscoveryClient
+@EnableRabbitMQ
 @SpringBootApplication
 public class UserServiceApplication {
 
