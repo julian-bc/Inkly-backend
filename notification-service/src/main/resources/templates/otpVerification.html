@@ -43,8 +43,8 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td style="padding: 20px 32px;">
-                                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 17px; font-weight: bold; font-style: italic; color: #ff5d62; letter-spacing: 3px; text-transform: uppercase;">
-                                            The Scriptorium
+                                        <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 17px; font-weight: bold; font-style: normal; color: #ff5d62; letter-spacing: 3px; text-transform: uppercase;">
+                                            Inkly
                                         </span>
                                     </td>
                                     <td align="right" style="padding: 20px 32px 20px 0;">
@@ -69,8 +69,8 @@
                         <td bgcolor="#13131a" style="background-color: #13131a; padding: 40px 32px;">
 
                             <!-- Tarjeta -->
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#1e1e26"
-                                   style="background-color: #1e1e26; border: 1px solid #3a2f2f; border-radius: 14px;">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#1b1b22"
+       style="background-color: #1b1b22; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden;">
                                 <tr>
                                     <td style="padding: 40px 40px 0 40px;">
 
@@ -159,7 +159,7 @@
                                 <!-- Aviso de seguridad -->
                                 <tr>
                                     <td style="padding: 24px 40px 0 40px;">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#2e1a1b"
+                                        <table width="100%" border="0" cellspacing="" cellpadding="0" bgcolor="#2e1a1b"
                                                style="background-color: #2e1a1b; border-radius: 8px;">
                                             <tr valign="top">
                                                 <td width="32" style="padding: 16px 0 16px 20px; width: 32px;">
@@ -168,44 +168,25 @@
                                                 <td style="padding: 16px 20px 16px 10px;">
                                                     <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.55; color: #9a9aaa; margin: 0;">
                                                         Si no solicitaste este c&oacute;digo, ignora este correo. Tu cuenta permanece segura.
-                                                        Nunca compartas este c&oacute;digo con nadie — Inkly jam&aacute;s te lo pedir&aacute;.
+                                                        Nunca compartas este c&oacute;digo con nadie.
+                                                        Inkly jam&aacute;s te lo pedir&aacute;.
                                                     </p>
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
-
-                                <!-- Meta footer de la tarjeta: REF + fecha -->
                                 <tr>
-                                    <td style="padding: 20px 40px 28px 40px;">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td colspan="2" bgcolor="#2a2020"
-                                                    style="background-color: #2a2020; height: 1px; font-size: 0; line-height: 0; margin-bottom: 16px;">&nbsp;
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 16px;">
-                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #3a2f2f; letter-spacing: 2px; text-transform: uppercase;"
-                                                          th:text="'REF: ' + ${refCode}">
-                                                        REF: OTP-VER-00000
-                                                    </span>
-                                                </td>
-                                                <td align="right" style="padding-top: 16px;">
-                                                    <span style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #3a2f2f; letter-spacing: 2px; text-transform: uppercase;"
-                                                          th:text="${fechaSolicitud}">
-                                                        Mayo 2026
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td style="padding: 20px 40px 28px 40px; border-top: 1px; margin-top: 24px;">
                                     </td>
                                 </tr>
-
                             </table>
-                            <!-- / Tarjeta -->
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <td bgcolor="#13131a" style="background-color: #13131a; padding: 24px 32px; text-align: center;">
+                        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; color: #3a2f2f;">&#8258;</span>
                         </td>
                     </tr>
 
@@ -214,31 +195,12 @@
                         <td bgcolor="#16161d" style="background-color: #16161d; border-top: 1px solid #363646;">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td style="padding: 40px 32px 32px 32px; text-align: center;">
-                                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
-                                            The Scriptorium
-                                        </p>
-                                        <!-- Links -->
-                                        <table border="0" cellspacing="0" cellpadding="0" align="center"
-                                               style="margin-bottom: 20px;">
-                                            <tr>
-                                                <td style="padding: 0 12px;">
-                                                    <a href="#" style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #727169; text-decoration: none;">Privacy Policy</a>
-                                                </td>
-                                                <td style="padding: 0 12px;">
-                                                    <a href="#" style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #727169; text-decoration: none;">Terms of Service</a>
-                                                </td>
-                                                <td style="padding: 0 12px;">
-                                                    <a href="#" style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #727169; text-decoration: none;">Unsubscribe</a>
-                                                </td>
-                                                <td style="padding: 0 12px;">
-                                                    <a href="#" style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #727169; text-decoration: none;">Preferences</a>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <!-- Copyright -->
-                                        <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 12px; color: #727169; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
-                                            &copy; 2026 Inkly. Written by EYL Software.
+                                    <td style="padding: 32px; text-align: center;">
+                                        <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: bold; color: #727169; margin: 0 0 20px 0;">
+                                                Inkly
+                                            </p>
+                                        <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; color: #9CABCA; letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+                                            © 2026 Inkly.
                                         </p>
                                     </td>
                                 </tr>
