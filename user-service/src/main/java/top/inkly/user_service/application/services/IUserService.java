@@ -15,5 +15,6 @@ public interface IUserService {
     void updateUser(UUID userId, UserModel userUpdated);
     void toggleUserStatus(UUID userId);
     void updateProfileImage(UUID userId, MultipartFile profileImage);
+    void updateForgottenPassword(UUID userId, String passwordUpdated);
     void deleteProfileImage(UUID userId);
 }

@@ -9,4 +9,5 @@ public interface VerificationRepository {
     VerificationModel findByUserIdAndVerificationType(UUID userId, VerificationType verificationType);
     void save(VerificationModel verificationModel);
     void deleteById(UUID verificationId);
+    boolean existsByUserIdWithStatusVerifiedAndTypeForgotPassword(UUID userId);
 }
