@@ -9,6 +9,7 @@ import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
+import top.inkly.user_service.domain.exceptions.verification.NotFoundVerificationAvailable;
 import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.exceptions.business.FailedDatabaseOperation;
 import top.inkly.user_service.domain.exceptions.business.UserNotFoundException;
@@ -18,6 +19,7 @@ import top.inkly.user_service.domain.ports.output.cloudinary.CloudinaryConnector
 import top.inkly.user_service.domain.ports.output.keycloak.KeycloakConnectorPort;
 import top.inkly.user_service.domain.ports.output.queues.NotificationPublisherPort;
 import top.inkly.user_service.domain.ports.output.repositories.UserRepository;
+import top.inkly.user_service.domain.ports.output.verification.VerificationConnectorPort;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -34,6 +36,7 @@ public class UserService implements IUserService {
     private final KeycloakConnectorPort keycloak;
     private final NotificationPublisherPort notificationPublisher;
     private final CloudinaryConnectorPort cloudinaryConnectorPort;
+    private final VerificationConnectorPort verificationConnectorPort;
 
     @Override
     public PageResponse<UserModel> findUsers(PaginationRequest request, UserFilters filters) {
@@ -123,6 +126,20 @@ public class UserService implements IUserService {
         userSaved.setProfileImageUrl(profileImageUrl);
         userSaved.setUpdatedAt(LocalDateTime.now());
 
+        repository.save(userSaved);
+    }
+
+    @Override
+    public void updateForgottenPassword(UUID userId, String passwordUpdated) {
+        UserModel userSaved = this.findUser(userId);
+
+        if (!verificationConnectorPort.existsByUserIdAndVerificationStatus(userId)) {
+            throw new NotFoundVerificationAvailable("No se encontró una verificación disponible con estado VERIFICADO para el usuario especificado.");
+        }
+
+        keycloak.updateForgottenPassword(userId.toString(), passwordUpdated);
+
+        userSaved.setUpdatedAt(LocalDateTime.now());
         repository.save(userSaved);
     }
 
