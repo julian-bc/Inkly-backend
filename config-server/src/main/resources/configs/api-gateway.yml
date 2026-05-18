@@ -50,3 +50,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_REALM_ISSUER}
+
+frontend:
+  url: ${FRONTEND_URL}
