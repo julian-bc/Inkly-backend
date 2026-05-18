@@ -5,22 +5,26 @@ services:
       context: .
       dockerfile: ./config-server/Dockerfile
     container_name: config-server
+    networks:
+      - kadan-net
     ports:
       - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
     env_file:
       - ${ENV_FILE}
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${CONFIG_SERVER_PORT}/actuator/health"]
-      interval: 5s
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://config-server:${CONFIG_SERVER_PORT}/actuator/health"]
+      interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 5s
+      start_period: 25s
 
   eureka-server:
     build:
       context: .
       dockerfile: ./eureka-server/Dockerfile
     container_name: eureka-server
+    networks:
+      - kadan-net
     ports:
       - "${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}"
     depends_on:
@@ -29,17 +33,19 @@ services:
     env_file:
       - ${ENV_FILE}
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${DISCOVERY_SERVER_PORT}/actuator/health"]
-      interval: 5s
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://eureka-server:${DISCOVERY_SERVER_PORT}/actuator/health"]
+      interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 5s
+      start_period: 25s
 
-  api_gateway:
+  api-gateway:
     build:
       context: .
       dockerfile: ./api-gateway/Dockerfile
     container_name: api-gateway
+    networks:
+      - kadan-net
     ports:
       - "${APP_PORT}:${APP_PORT}"
     depends_on:
@@ -50,11 +56,11 @@ services:
     env_file:
       - ${ENV_FILE}
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${APP_PORT}/actuator/health"]
-      interval: 5s
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://api-gateway:${APP_PORT}/actuator/health"]
+      interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 5s
+      start_period: 25s
 
   ### BUSINESS MICROSERVICES
 
@@ -65,12 +71,14 @@ services:
       args:
         SERVICE_FOLDER: notification-service
     container_name: notification-service
+    networks:
+      - kadan-net
     depends_on:
       config-server:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-      api_gateway:
+      api-gateway:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
@@ -82,12 +90,14 @@ services:
       args:
         SERVICE_FOLDER: user-service
     container_name: user-service
+    networks:
+      - kadan-net
     depends_on:
       config-server:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-      api_gateway:
+      api-gateway:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
@@ -99,12 +109,14 @@ services:
       args:
         SERVICE_FOLDER: verification-service
     container_name: verification-service
+    networks:
+      - kadan-net
     depends_on:
       config-server:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-      api_gateway:
+      api-gateway:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
@@ -116,12 +128,14 @@ services:
       args:
         SERVICE_FOLDER: view-service
     container_name: view-service
+    networks:
+      - kadan-net
     depends_on:
       config-server:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-      api_gateway:
+      api-gateway:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
@@ -131,12 +145,19 @@ services:
       context: .
       dockerfile: ./story-service/Dockerfile
     container_name: story-service
+    networks:
+      - kadan-net
     depends_on:
       config-server:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-      api_gateway:
+      api-gateway:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
+
+networks:
+  kadan-net:
+    driver: bridge
+    external: true
