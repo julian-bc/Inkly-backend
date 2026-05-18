@@ -127,8 +127,7 @@ public class AuthRestController {
                                 (environment.equalsIgnoreCase(Constants.AUS) || environment.equalsIgnoreCase(Constants.PROD)) ? Constants.NONE_SITE_PROD : Constants.BLANK
                 )
                 .secure(
-                        (environment.equalsIgnoreCase(Constants.DEV) || environment.equalsIgnoreCase(Constants.INT)) ? Constants.COOKIE_SECURE_DEV :
-                                (environment.equalsIgnoreCase(Constants.AUS) || environment.equalsIgnoreCase(Constants.PROD)) && Constants.COOKIE_SECURE_DEV
+                        (environment.equalsIgnoreCase(Constants.AUS) || environment.equalsIgnoreCase(Constants.PROD)) ? !Constants.COOKIE_SECURE_DEV : Constants.COOKIE_SECURE_DEV
                 )
                 .path(Constants.COOKIE_PATH)
                 .maxAge(cookieTime)
