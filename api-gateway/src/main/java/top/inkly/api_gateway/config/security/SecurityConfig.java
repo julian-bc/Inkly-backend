@@ -41,7 +41,9 @@ public class SecurityConfig {
                                 "/auth/validate/access",
                                 "/auth/validate/session",
                                 "/auth/refresh-session",
-                                "/auth/logout"
+                                "/auth/logout",
+                                "/eureka/web",
+                                "/eureka/web/"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
