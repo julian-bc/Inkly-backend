@@ -52,6 +52,11 @@ public class MySQLUserRepository implements UserRepository {
     }
 
     @Override
+    public boolean existsByEmailOrUsername(String email, String username) {
+        return jpaRepository.existsByUserNameOrEmail(username, email);
+    }
+
+    @Override
     public void save(UserModel user) {
         jpaRepository.save(mapper.toInfra(user));
     }

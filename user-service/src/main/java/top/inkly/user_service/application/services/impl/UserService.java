@@ -9,6 +9,7 @@ import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.user_service.application.services.IRoleService;
 import top.inkly.user_service.application.services.IUserService;
+import top.inkly.user_service.domain.exceptions.business.UserAlreadyExistsException;
 import top.inkly.user_service.domain.exceptions.verification.NotFoundVerificationAvailable;
 import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.exceptions.business.FailedDatabaseOperation;
@@ -60,6 +61,10 @@ public class UserService implements IUserService {
         if (Objects.isNull(user.getRole())) {
             RoleModel userRole = roleService.findRole(2);
             user.setRole(userRole);
+        }
+
+        if (repository.existsByEmailOrUsername(user.getEmail(), user.getUserName())) {
+            throw new UserAlreadyExistsException("Ya existe un usuario con ese correo o nombre");
         }
 
         user.setCreatedAt(LocalDateTime.now());
