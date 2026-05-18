@@ -27,7 +27,7 @@ spring:
             - id: verification-service
               uri: lb://verification-service
               predicates:
-                - Path=/verification-codes/**
+                - Path=/verification-codes/**,/verification-codes/available/**
             ### Stories Service Route
             - id: story-service
               uri: lb://story-service

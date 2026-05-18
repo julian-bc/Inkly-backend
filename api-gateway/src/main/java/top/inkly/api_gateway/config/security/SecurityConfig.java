@@ -54,7 +54,8 @@ public class SecurityConfig {
                                 "/api/story/id/{storyId}",
                                 "/api/genre",
                                 "/api/chapter/{storyId}",
-                                "/api/tag/search"
+                                "/api/tag/search",
+                                "/verification-codes/available/{userId}"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
