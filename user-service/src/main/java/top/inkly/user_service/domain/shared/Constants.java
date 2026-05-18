@@ -23,10 +23,15 @@ public class Constants {
     // COOKIES Constants
     public static final boolean HTTP_ONLY = true;
     public static final String SAME_SITE_DEV = "Lax";
+    public static final String NONE_SITE_PROD = "None";
     public static final boolean COOKIE_SECURE_DEV = false;
     public static final String COOKIE_PATH = "/";
     public static final Integer COOKIE_ACCESS_TOKEN_DURATION = 15;
     public static final Integer COOKIE_REFRESH_TOKEN_DURATION = 7;
+    public static final String DEV = "DEV";
+    public static final String INT = "INT";
+    public static final String AUS = "AUS";
+    public static final String PROD = "PROD";
 
     // UTIL Constants
     public static final String BLANK = "";

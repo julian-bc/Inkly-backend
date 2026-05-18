@@ -2,6 +2,7 @@ package top.inkly.user_service.infrastructure.input.rest.controller.impl;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ import top.inkly.user_service.infrastructure.input.rest.dtos.auth.TokenValidatio
 public class AuthRestController {
 
     private final IAuthService authService;
+
+    @Value("${environment}")
+    private String environment;
 
     @PostMapping("/login")
     ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
@@ -118,8 +122,14 @@ public class AuthRestController {
     private String buildCookie(String cookieName, String cookieValue, Integer cookieTime) {
         return ResponseCookie.from(cookieName, cookieValue)
                 .httpOnly(Constants.HTTP_ONLY)
-                .sameSite(Constants.SAME_SITE_DEV)
-                .secure(Constants.COOKIE_SECURE_DEV)
+                .sameSite(
+                        (environment.equalsIgnoreCase(Constants.DEV) || environment.equalsIgnoreCase(Constants.INT)) ? Constants.SAME_SITE_DEV :
+                                (environment.equalsIgnoreCase(Constants.AUS) || environment.equalsIgnoreCase(Constants.PROD)) ? Constants.NONE_SITE_PROD : Constants.BLANK
+                )
+                .secure(
+                        (environment.equalsIgnoreCase(Constants.DEV) || environment.equalsIgnoreCase(Constants.INT)) ? Constants.COOKIE_SECURE_DEV :
+                                (environment.equalsIgnoreCase(Constants.AUS) || environment.equalsIgnoreCase(Constants.PROD)) && Constants.COOKIE_SECURE_DEV
+                )
                 .path(Constants.COOKIE_PATH)
                 .maxAge(cookieTime)
                 .build().toString();

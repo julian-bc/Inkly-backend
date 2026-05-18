@@ -36,3 +36,5 @@ springdoc:
     disable-swagger-default-url: true
   api-docs:
     path: /v1/api-docs
+
+environment: ${ENVIRONMENT}
