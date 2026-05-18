@@ -1,51 +1,142 @@
 services:
-  config_server:
-    build: ./config-server
-    container_name: config_server
-    env_file:
-      - ./.env
-
-  eureka_server:
-    build: ./eureka-server
-    container_name: eureka_server
+  ### CONFIGURATION MICROSERVICES
+  config-server:
+    build:
+      context: .
+      dockerfile: ./config-server/Dockerfile
+    container_name: config-server
     ports:
-      - "8761:8761"
+      - "${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}"
+    env_file:
+      - ${ENV_FILE}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${CONFIG_SERVER_PORT}/actuator/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  eureka-server:
+    build:
+      context: .
+      dockerfile: ./eureka-server/Dockerfile
+    container_name: eureka-server
+    ports:
+      - "${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}"
     depends_on:
-      - config_server
+      config-server:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${DISCOVERY_SERVER_PORT}/actuator/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   api_gateway:
-    build: ./api-gateway
-    container_name: api_gateway
+    build:
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
+    container_name: api-gateway
     ports:
-      - "8080:8080"
+      - "${APP_PORT}:${APP_PORT}"
     depends_on:
-      - config_server
-      - eureka_server
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${APP_PORT}/actuator/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  ### BUSINESS MICROSERVICES
 
   notification_service:
-    build: .
-    container_name: notification_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: notification-service
+    container_name: notification-service
     depends_on:
-      - config_server
-      - eureka_server
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      api_gateway:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
 
   user_service:
-    build: .
-    container_name: user_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: user-service
+    container_name: user-service
     depends_on:
-      - config_server
-      - eureka_server
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      api_gateway:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
 
   verification_service:
-    build: .
-    container_name: verification_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: verification-service
+    container_name: verification-service
     depends_on:
-      - config_server
-      - eureka_server
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      api_gateway:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
 
   view_service:
-    build: .
-    container_name: view_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_FOLDER: view-service
+    container_name: view-service
     depends_on:
-      - config_server
-      - eureka_server
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      api_gateway:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
+
+  story_service:
+    build:
+      context: .
+      dockerfile: ./story-service/Dockerfile
+    container_name: story-service
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      api_gateway:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}

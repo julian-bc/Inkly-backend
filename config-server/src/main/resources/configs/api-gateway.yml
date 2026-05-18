@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${APP_PORT}
 
 spring:
   cloud:
@@ -12,13 +12,12 @@ spring:
             - id: user-service
               uri: lb://user-service
               predicates:
-                - Path=/users/**
+                - Path=/users/**,/auth/**
             ### Notification Service Route
             - id: notification-service
               uri: lb://notification-service
               predicates:
-                - Path=/notifications/**
-                - Path=/templates/**
+                - Path=/notifications/**,/templates/**
             ### Views Service Route
             - id: view-service
               uri: lb://view-service
@@ -28,25 +27,26 @@ spring:
             - id: verification-service
               uri: lb://verification-service
               predicates:
-                - Path=/verification-codes/**
-            #
+                - Path=/verification-codes/**,/verification-codes/available/**
+            ### Stories Service Route
+            - id: story-service
+              uri: lb://story-service
+              predicates:
+                - Path=/api/story/**,/api/genre/**,/api/chapter/**,/api/view/**,/api/rating/**,/api/favorite/**,/api/tag/**,/api/comment/**
             ### Discovery Service Route
             - id: discovery-service
-              uri: http://localhost:8761
+              uri: ${EUREKA_SERVER_URL}
               predicates:
                 - Path=/eureka/web,/eureka/web/
               filters:
                 - SetPath=/
             ### Discovery Service Static Resources Route
             - id: discovery-service-static
-              uri: http://localhost:8761
+              uri: ${EUREKA_SERVER_URL}
               predicates:
                 - Path=/eureka/**
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK.REALM.ISSUER}
-
-keycloak:
-  realm: ${KEYCLOAK.REALM}
+          issuer-uri: ${KEYCLOAK_REALM_ISSUER}

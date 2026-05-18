@@ -10,7 +10,9 @@ import top.inkly.verification_service.domain.exceptions.business.VerificationNot
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
-import top.inkly.verification_service.domain.ports.output.user.UserConnectorPort;
+import top.inkly.shared.domain.ports.output.user.UserConnectorPort;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,6 @@ public class VerificationService implements IVerificationService {
 
     @Override
     public void saveVerificationRecord(VerificationModel verificationModel) {
-        // open feign user-service exists userById
         userConnectorPort.existsUserById(verificationModel.getUserId());
 
         VerificationModel existingVerification = repository.findByUserIdAndVerificationType(
@@ -70,5 +71,10 @@ public class VerificationService implements IVerificationService {
             existingVerification.setVerificationStatus(VerificationStatus.VERIFIED);
             repository.save(existingVerification);
         }
+    }
+
+    @Override
+    public boolean existsVerifyCodeForgottenPasswordByUserId(UUID userId) {
+        return repository.existsByUserIdWithStatusVerifiedAndTypeForgotPassword(userId);
     }
 }

@@ -1,8 +1,11 @@
 package top.inkly.user_service.infrastructure.output.keycloak.adapter;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import top.inkly.user_service.domain.exceptions.auth.IncorrectCredentialsException;
 import top.inkly.user_service.domain.exceptions.keycloak.FailedKeycloakOperationException;
 import top.inkly.user_service.domain.models.auth.LoginRequestModel;
 import top.inkly.user_service.domain.ports.output.keycloak.AuthConnectorPort;
@@ -46,8 +49,12 @@ public class KeycloakAuthAdapter implements AuthConnectorPort {
                  );
              }
 
-        } catch (Exception e) {
-            throw new FailedKeycloakOperationException(e.getMessage());
+        } catch (FeignException e) {
+            if (e.status() == HttpStatus.BAD_REQUEST.value()) {
+                throw new IncorrectCredentialsException("Usuario o Contraseña Incorrectos");
+            } else {
+                throw new FailedKeycloakOperationException(e.getMessage());
+            }
         }
 
         return loginResponseData;
@@ -81,9 +88,8 @@ public class KeycloakAuthAdapter implements AuthConnectorPort {
         try {
             Map<String, Object> bodyResponse = authClient.introspect(validationData).getBody();
             if (bodyResponse != null) {
-                validationResponseData = Map.of(
-                        Constants.ACTIVE, bodyResponse.get(Constants.ACTIVE)
-                );
+                validationResponseData.put(Constants.ACTIVE, bodyResponse.get(Constants.ACTIVE));
+                validationResponseData.put(Constants.SUB, bodyResponse.get(Constants.SUB));
             }
         } catch (Exception e) {
             throw new FailedKeycloakOperationException(e.getMessage());

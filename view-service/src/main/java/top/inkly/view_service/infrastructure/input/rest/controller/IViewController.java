@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import top.inkly.view_service.domain.models.ViewModel;
+import top.inkly.view_service.infrastructure.input.rest.dtos.ViewCreateRequest;
 
 @Tag(name = "Vistas", description = "Operaciones relacionadas con el seguimiento de lecturas y retroalimentación para escritores")
 public interface IViewController {
@@ -12,7 +12,7 @@ public interface IViewController {
     void counter(@PathVariable String bookId);
 
     @Operation(summary = "Crear nueva vista", description = "Registra una nueva vista asociada a un libro para el seguimiento de envíos de correos masivos a escritores.")
-    void createView(@RequestBody ViewModel viewModel);
+    void createView(@RequestBody ViewCreateRequest viewCreateRequest);
 
     @Operation(summary = "Eliminar vista", description = "Elimina el registro de vistas de un libro específico, útil para depuración o reinicio de métricas.")
     void deleteView(@PathVariable String bookId);

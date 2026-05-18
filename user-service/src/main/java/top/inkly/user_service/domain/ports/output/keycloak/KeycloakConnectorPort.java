@@ -13,6 +13,8 @@ public interface KeycloakConnectorPort {
 
     UserModel getKeycloakUserById(String userId) throws FailedKeycloakOperationException, NotFoundKeycloakUserException;
 
+    void updateForgottenPassword(String userId, String newPassword);
+
     UserModel getKeycloakUserByUsername(String username) throws FailedKeycloakOperationException, NotFoundKeycloakUserException;
 
     UserModel getKeycloakUserByEmail(String email) throws FailedKeycloakOperationException, NotFoundKeycloakUserException;

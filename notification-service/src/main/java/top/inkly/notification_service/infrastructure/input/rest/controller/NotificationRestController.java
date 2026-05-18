@@ -19,7 +19,7 @@ public class NotificationRestController {
     private final NotificationInputMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Void> testNotification(@RequestBody NotificationRequestDTO notificationDTO) {
+    public ResponseEntity<Void> sendNotification(@RequestBody NotificationRequestDTO notificationDTO) {
         notificationService.executeSendNotification(mapper.toModel(notificationDTO));
         return ResponseEntity.ok().build();
     }

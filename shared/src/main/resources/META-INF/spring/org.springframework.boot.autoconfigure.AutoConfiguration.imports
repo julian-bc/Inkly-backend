@@ -1,2 +1,1 @@
-top.inkly.shared.infrastructure.output.queues.config.RabbitMQConfig
-top.inkly.shared.infrastructure.config.web.CorsGlobalConfig
+top.inkly.shared.infrastructure.input.handler.GlobalExceptionHandler

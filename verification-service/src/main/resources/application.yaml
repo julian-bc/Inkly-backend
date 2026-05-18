@@ -2,7 +2,4 @@ spring:
   application:
     name: verification-service
   config:
-    import: ${CONFIG.SERVER.URL:optional:configserver:http://localhost:8888}
-  jpa:
-    hibernate:
-      ddl-auto:
+    import: optional:configserver:${CONFIG_SERVER_URL}
