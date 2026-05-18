@@ -1,0 +1,42 @@
+package top.inkly.view_service.infrastructure.input.rest.controller.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import top.inkly.view_service.application.service.IViewService;
+import top.inkly.view_service.infrastructure.input.rest.controller.IViewController;
+import top.inkly.view_service.infrastructure.input.rest.dtos.ViewCreateRequest;
+
+@RestController
+@RequestMapping("/views")
+@RequiredArgsConstructor
+public class ViewController implements IViewController {
+    private final IViewService service;
+
+    @PatchMapping("/counter/{bookId}")
+    public void counter(@PathVariable String bookId) {
+        service.count(bookId);
+    }
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createView(@RequestBody ViewCreateRequest viewCreateRequest) {
+        service.createView(
+                viewCreateRequest.getBookId(),
+                viewCreateRequest.getTitle(),
+                viewCreateRequest.getAuthorId()
+        );
+    }
+
+    @DeleteMapping("/{bookId}")
+    public void deleteView(@PathVariable String bookId) {
+        service.deleteView(bookId);
+    }
+}

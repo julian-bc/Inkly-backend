@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SERVICE_NOTIFICATION_DATABASE_URL}
+    username: ${SERVICE_MYSQL_DATABASE_USER}
+    password: ${SERVICE_MYSQL_DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+  main:
+    allow-bean-definition-overriding: true
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_AUTH}
+          starttls:
+            enable: ${MAIL_ENABLE_TLS}
+        connectiontimeout: ${MAIL_TIMEOUT}
+        timeout: ${MAIL_TIMEOUT}
+        writetimeout: ${MAIL_TIMEOUT}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs

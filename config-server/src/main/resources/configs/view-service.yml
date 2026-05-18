@@ -1,0 +1,13 @@
+spring:
+  mongodb:
+    uri: ${SERVICE_VIEW_MONGODB_URI}
+    database: ${SERVICE_VIEW_MONGODB_DB}
+  main:
+    allow-bean-definition-overriding: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v1/api-docs

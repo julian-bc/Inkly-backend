@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="/application (snapshot).yml">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/application (snapshot).yml" />
+              <option name="originalContent" value="server:&#10;  port: 8888&#10;&#10;spring:&#10;  application:&#10;    name: config-server&#10;  profiles:&#10;    active: native&#10;  cloud:&#10;    config:&#10;      server:&#10;        native:&#10;          search-locations: classpath:/configs&#10;" />
+              <option name="updatedContent" value="server:&#10;  port: 8888&#10;&#10;spring:&#10;  application:&#10;    name: config-server&#10;  config:&#10;    import: file:../.env&#10;  profiles:&#10;    active: native&#10;  cloud:&#10;    config:&#10;      server:&#10;        native:&#10;          search-locations: classpath:/configs&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

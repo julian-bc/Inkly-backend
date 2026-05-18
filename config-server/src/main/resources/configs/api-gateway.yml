@@ -1,0 +1,52 @@
+server:
+  port: ${APP_PORT}
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          # PUT MORE SPECIFIC → THE LEAST SPECIFIC ROUTE
+          routes:
+            ### Users Service Route
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/users/**,/auth/**
+            ### Notification Service Route
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/notifications/**,/templates/**
+            ### Views Service Route
+            - id: view-service
+              uri: lb://view-service
+              predicates:
+                - Path=/views/**
+            ### Verification Service Route
+            - id: verification-service
+              uri: lb://verification-service
+              predicates:
+                - Path=/verification-codes/**,/verification-codes/available/**
+            ### Stories Service Route
+            - id: story-service
+              uri: lb://story-service
+              predicates:
+                - Path=/api/story/**,/api/genre/**,/api/chapter/**,/api/view/**,/api/rating/**,/api/favorite/**,/api/tag/**,/api/comment/**
+            ### Discovery Service Route
+            - id: discovery-service
+              uri: ${EUREKA_SERVER_URL}
+              predicates:
+                - Path=/eureka/web,/eureka/web/
+              filters:
+                - SetPath=/
+            ### Discovery Service Static Resources Route
+            - id: discovery-service-static
+              uri: ${EUREKA_SERVER_URL}
+              predicates:
+                - Path=/eureka/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_REALM_ISSUER}
