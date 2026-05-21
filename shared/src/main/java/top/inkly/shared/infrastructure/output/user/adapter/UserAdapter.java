@@ -25,11 +25,11 @@ public class UserAdapter implements UserConnectorPort {
     }
 
     @Override
-    public void existsUserById(UUID userId) {
+    public UserResponse findUserByUsernameOrEmail(String usernameOrEmail) {
         try {
-            userClient.getUserById(userId);
+            return userClient.getUserByUsernameOrEmail(usernameOrEmail);
         } catch (FeignException ex) {
-            throw new UserNotFoundException("Usuario con ID: " + userId + " no encontrado.");
+            throw new UserNotFoundException("Usuario con email/username no encontrado.");
         }
     }
 }

@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface UserConnectorPort {
     UserResponse findUserById(UUID userId);
-    void existsUserById(UUID userId);
+    UserResponse findUserByUsernameOrEmail(String usernameOrEmail);
 }

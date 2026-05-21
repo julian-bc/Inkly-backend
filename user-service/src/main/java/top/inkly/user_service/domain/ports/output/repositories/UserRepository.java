@@ -5,13 +5,13 @@ import top.inkly.shared.domain.pagination.PaginationResult;
 import top.inkly.user_service.domain.filters.UserFilters;
 import top.inkly.user_service.domain.models.UserModel;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository {
     PaginationResult<UserModel> findAll(PaginationRequest request, UserFilters filters);
     Optional<UserModel> findById(UUID id);
+    Optional<UserModel> findByUsernameOrEmail(String usernameOrEmail);
     boolean existsByEmailOrUsername(String email, String username);
     void save(UserModel user);
 }

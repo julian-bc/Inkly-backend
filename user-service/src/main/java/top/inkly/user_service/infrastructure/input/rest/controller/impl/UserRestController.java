@@ -21,6 +21,7 @@ import top.inkly.user_service.infrastructure.input.rest.controller.IUserRestCont
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.CreateUser;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.PatchUser;
 import top.inkly.shared.infrastructure.input.rest.dtos.user.UserResponse;
+import top.inkly.user_service.infrastructure.input.rest.dtos.user.UpdateEmailRequest;
 import top.inkly.user_service.infrastructure.input.rest.dtos.user.UpdatePasswordRequest;
 import top.inkly.user_service.infrastructure.input.rest.mapper.UserRestMapper;
 
@@ -54,16 +55,21 @@ public class UserRestController implements IUserRestController {
         return mapper.toUserResponse(service.findUser(id));
     }
 
+    @GetMapping(value = "/users/username-email/{usernameOrEmail}")
+    public UserResponse getUserByUsernameOrEmail(@PathVariable String usernameOrEmail) {
+        return mapper.toUserResponse(service.findUser(usernameOrEmail));
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody CreateUser user) {
         service.createUser(mapper.toDomain(user));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/update-username")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable UUID id, @RequestBody PatchUser userUpdated) {
-        service.updateUser(id, mapper.toDomain(userUpdated));
+    public void updateUsername(@PathVariable UUID id, @RequestBody PatchUser userUpdated) {
+        service.updateUsername(id, userUpdated.getUserName());
     }
 
     @PatchMapping("/{id}/toggle-status")
@@ -82,8 +88,13 @@ public class UserRestController implements IUserRestController {
         service.deleteProfileImage(id);
     }
 
-    @PatchMapping("/{id}/update-password")
-    public void updateForgottenPassword(@PathVariable UUID id, @RequestBody UpdatePasswordRequest passwordRequest) {
-        service.updateForgottenPassword(id, passwordRequest.getNewPassword());
+    @PatchMapping("/{usernameOrEmail}/update-password")
+    public void updateForgottenPassword(@PathVariable String usernameOrEmail, @RequestBody UpdatePasswordRequest passwordRequest) {
+        service.updateForgottenPassword(usernameOrEmail, passwordRequest.getNewPassword());
+    }
+
+    @PatchMapping("/{oldEmail}/update-email")
+    public void updateEmail(@PathVariable String oldEmail, @RequestBody UpdateEmailRequest emailRequest) {
+        service.updateEmail(oldEmail, emailRequest.getNewEmail());
     }
 }

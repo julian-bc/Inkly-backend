@@ -11,4 +11,7 @@ import java.util.UUID;
 public interface UserClient {
     @GetMapping(value = "/users/{userId}")
     UserResponse getUserById(@PathVariable UUID userId);
+
+    @GetMapping(value = "/users/username-email/{usernameOrEmail}")
+    UserResponse getUserByUsernameOrEmail(@PathVariable String usernameOrEmail);
 }

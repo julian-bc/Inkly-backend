@@ -75,7 +75,9 @@ public class SecurityConfig {
                         .authenticated()
                         .requestMatchers(
                                 HttpMethod.PATCH,
-                                "/users/{id}",
+                                "/users/{id}/update-username",
+                                "/users/{usernameOrEmail}/update-password",
+                                "/users/{oldEmail}/update-email",
                                 "/users/{id}/toggle-status",
                                 "/users/{id}/update-image",
                                 "/api/story/cover/{id}",

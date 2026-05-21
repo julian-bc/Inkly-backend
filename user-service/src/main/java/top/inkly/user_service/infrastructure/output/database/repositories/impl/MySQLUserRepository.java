@@ -52,6 +52,12 @@ public class MySQLUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<UserModel> findByUsernameOrEmail(String usernameOrEmail) {
+        return jpaRepository.findByUserNameOrEmail(usernameOrEmail)
+                .map(mapper::toDomain);
+    }
+
+    @Override
     public boolean existsByEmailOrUsername(String email, String username) {
         return jpaRepository.existsByUserNameOrEmail(username, email);
     }
