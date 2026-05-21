@@ -56,6 +56,12 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserModel findUser(String usernameOrEmail) {
+        return repository.findByUsernameOrEmail(usernameOrEmail)
+                .orElseThrow(() -> new UserNotFoundException("Usuario con username/email no encontrado!"));
+    }
+
+    @Override
     @SneakyThrows
     public void createUser(UserModel user) {
         if (Objects.isNull(user.getRole())) {
@@ -86,17 +92,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void updateUser(UUID userId, UserModel userUpdated) {
+    public void updateUsername(UUID userId, String username) {
         UserModel userSaved = this.findUser(userId);
-        String email = userSaved.getEmail();
 
-        userSaved.setUserName(userUpdated.getUserName());
-        userSaved.setEmail(userUpdated.getEmail());
+        userSaved.setUserName(username);
         userSaved.setUpdatedAt(LocalDateTime.now());
-
-        if (!email.equals(userUpdated.getEmail())) {
-            userSaved.setEmailVerified(false);
-        }
 
         keycloak.updateKeycloakUser(userId.toString(), userSaved);
         try {
@@ -135,8 +135,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void updateForgottenPassword(UUID userId, String passwordUpdated) {
-        UserModel userSaved = this.findUser(userId);
+    public void updateForgottenPassword(String usernameOrEmail, String passwordUpdated) {
+        UserModel userSaved = this.findUser(usernameOrEmail);
+        UUID userId = userSaved.getUserId();
 
         if (!verificationConnectorPort.existsByUserIdAndVerificationStatus(userId)) {
             throw new NotFoundVerificationAvailable("No se encontró una verificación disponible con estado VERIFICADO para el usuario especificado.");
@@ -145,7 +146,30 @@ public class UserService implements IUserService {
         keycloak.updateForgottenPassword(userId.toString(), passwordUpdated);
 
         userSaved.setUpdatedAt(LocalDateTime.now());
+
         repository.save(userSaved);
+    }
+
+    @Override
+    public void updateEmail(String oldEmail, String newEmail) {
+        UserModel userSaved = this.findUser(oldEmail);
+        UUID userId = userSaved.getUserId();
+
+        if (!verificationConnectorPort.existsByUserIdAndVerificationStatus(userId)) {
+            throw new NotFoundVerificationAvailable("No se encontró una verificación disponible con estado VERIFICADO para el usuario especificado.");
+        }
+
+        userSaved.setEmail(newEmail);
+        userSaved.setUpdatedAt(LocalDateTime.now());
+
+        keycloak.updateKeycloakUser(userId.toString(), userSaved);
+
+        try {
+            repository.save(userSaved);
+        } catch (Exception e) {
+            keycloak.updateKeycloakUser(userId.toString(), this.findUser(userId));
+            throw new FailedDatabaseOperation("Error al actualizar usuario en Base de Datos: " + e.getMessage());
+        }
     }
 
     @Override

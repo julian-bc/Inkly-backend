@@ -2,13 +2,17 @@ package top.inkly.verification_service.application.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import top.inkly.shared.infrastructure.input.rest.dtos.user.UserResponse;
 import top.inkly.verification_service.application.service.IVerificationService;
+import static top.inkly.verification_service.application.service.utils.OTPNotificationBuilder.buildOtpNotification;
 import top.inkly.verification_service.domain.exceptions.business.NoAttemptsAvailableException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationCodeIsExpiredException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationInvalidCodeException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationNotFoundException;
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
+import top.inkly.verification_service.domain.models.enums.VerificationType;
+import top.inkly.verification_service.domain.ports.output.queues.NotificationPublisherPort;
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
 import top.inkly.shared.domain.ports.output.user.UserConnectorPort;
 
@@ -19,14 +23,17 @@ import java.util.UUID;
 public class VerificationService implements IVerificationService {
     private final VerificationRepository repository;
     private final UserConnectorPort userConnectorPort;
+    private final NotificationPublisherPort notificationPublisher;
 
     @Override
-    public void saveVerificationRecord(VerificationModel verificationModel) {
-        userConnectorPort.existsUserById(verificationModel.getUserId());
+    public void saveVerificationRecord(String usernameOrEmail, VerificationType verificationType) {
+        UserResponse userResponse = userConnectorPort.findUserByUsernameOrEmail(usernameOrEmail);
+
+        VerificationModel verificationModel = new VerificationModel();
 
         VerificationModel existingVerification = repository.findByUserIdAndVerificationType(
-                verificationModel.getUserId(),
-                verificationModel.getVerificationType()
+                userResponse.getUserId(),
+                verificationType
         );
 
        if (existingVerification != null) {
@@ -36,15 +43,24 @@ public class VerificationService implements IVerificationService {
        verificationModel.generateCode();
        verificationModel.setAttempts(5);
        verificationModel.loadDates();
+       verificationModel.setVerificationType(verificationType);
        verificationModel.setVerificationStatus(VerificationStatus.WAITING);
        repository.save(verificationModel);
+
+       notificationPublisher.publishNotificationMessage(buildOtpNotification(
+               userResponse.getEmail(),
+               userResponse.getUserName(),
+               verificationModel.getCode()
+       ));
     }
 
     @Override
-    public void verifyCode(VerificationModel verificationModel) {
+    public void verifyCode(String usernameOrEmail, VerificationType verificationType, String code) {
+        UserResponse userResponse = userConnectorPort.findUserByUsernameOrEmail(usernameOrEmail);
+
         VerificationModel existingVerification = repository.findByUserIdAndVerificationType(
-                verificationModel.getUserId(),
-                verificationModel.getVerificationType()
+                userResponse.getUserId(),
+                verificationType
         );
 
         if (existingVerification == null ||
@@ -62,7 +78,7 @@ public class VerificationService implements IVerificationService {
             throw new NoAttemptsAvailableException("Número máximo de intentos alcanzado, el código ya no está disponible.");
         }
 
-        if (!existingVerification.isValidCode(verificationModel.getCode())) {
+        if (!existingVerification.isValidCode(code)) {
             Integer attempts = existingVerification.getAttempts() - 1;
             existingVerification.setAttempts(attempts);
             repository.save(existingVerification);
@@ -77,4 +93,5 @@ public class VerificationService implements IVerificationService {
     public boolean existsVerifyCodeForgottenPasswordByUserId(UUID userId) {
         return repository.existsByUserIdWithStatusVerifiedAndTypeForgotPassword(userId);
     }
+
 }
