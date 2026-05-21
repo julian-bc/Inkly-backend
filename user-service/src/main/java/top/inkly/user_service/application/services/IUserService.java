@@ -11,10 +11,12 @@ import java.util.UUID;
 public interface IUserService {
     PageResponse<UserModel> findUsers(PaginationRequest request, UserFilters filters);
     UserModel findUser(UUID userId);
+    UserModel findUser(String usernameOrEmail);
     void createUser(UserModel user);
-    void updateUser(UUID userId, UserModel userUpdated);
+    void updateUsername(UUID userId, String username);
     void toggleUserStatus(UUID userId);
     void updateProfileImage(UUID userId, MultipartFile profileImage);
-    void updateForgottenPassword(UUID userId, String passwordUpdated);
+    void updateForgottenPassword(String usernameOrEmail, String passwordUpdated);
+    void updateEmail(String oldEmail, String newEmail);
     void deleteProfileImage(UUID userId);
 }
