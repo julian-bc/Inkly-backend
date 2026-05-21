@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.inkly.shared.infrastructure.input.rest.dtos.user.UserResponse;
 import top.inkly.verification_service.application.service.IVerificationService;
+import static top.inkly.verification_service.application.service.utils.OTPNotificationBuilder.buildOtpNotification;
 import top.inkly.verification_service.domain.exceptions.business.NoAttemptsAvailableException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationCodeIsExpiredException;
 import top.inkly.verification_service.domain.exceptions.business.VerificationInvalidCodeException;
@@ -11,6 +12,7 @@ import top.inkly.verification_service.domain.exceptions.business.VerificationNot
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
 import top.inkly.verification_service.domain.models.enums.VerificationType;
+import top.inkly.verification_service.domain.ports.output.queues.NotificationPublisherPort;
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
 import top.inkly.shared.domain.ports.output.user.UserConnectorPort;
 
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class VerificationService implements IVerificationService {
     private final VerificationRepository repository;
     private final UserConnectorPort userConnectorPort;
+    private final NotificationPublisherPort notificationPublisher;
 
     @Override
     public void saveVerificationRecord(String usernameOrEmail, VerificationType verificationType) {
@@ -43,6 +46,12 @@ public class VerificationService implements IVerificationService {
        verificationModel.setVerificationType(verificationType);
        verificationModel.setVerificationStatus(VerificationStatus.WAITING);
        repository.save(verificationModel);
+
+       notificationPublisher.publishNotificationMessage(buildOtpNotification(
+               userResponse.getEmail(),
+               userResponse.getUserName(),
+               verificationModel.getCode()
+       ));
     }
 
     @Override
@@ -84,4 +93,5 @@ public class VerificationService implements IVerificationService {
     public boolean existsVerifyCodeForgottenPasswordByUserId(UUID userId) {
         return repository.existsByUserIdWithStatusVerifiedAndTypeForgotPassword(userId);
     }
+
 }
