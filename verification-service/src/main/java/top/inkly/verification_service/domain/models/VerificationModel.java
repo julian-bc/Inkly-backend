@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
-import top.inkly.verification_service.domain.models.enums.VerificationType;
+import top.inkly.shared.domain.models.verification.VerificationType;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;

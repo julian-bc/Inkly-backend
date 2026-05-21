@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import top.inkly.verification_service.domain.models.enums.VerificationType;
+import top.inkly.shared.domain.models.verification.VerificationType;
 
 @Getter @Setter
 @NoArgsConstructor

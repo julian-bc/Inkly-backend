@@ -56,6 +56,7 @@ public class SecurityConfig {
                                 HttpMethod.GET,
                                 "/users",
                                 "/users/{id}",
+                                "/users/username-email/{usernameOrEmail}",
                                 "/api/story/search",
                                 "/api/story/id/{storyId}",
                                 "/api/genre",

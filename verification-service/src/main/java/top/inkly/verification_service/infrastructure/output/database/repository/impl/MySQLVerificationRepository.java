@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
-import top.inkly.verification_service.domain.models.enums.VerificationType;
+import top.inkly.shared.domain.models.verification.VerificationType;
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
 import top.inkly.verification_service.infrastructure.output.database.mapper.VerificationInfraMapper;
 import top.inkly.verification_service.infrastructure.output.database.repository.VerificationJpaRepository;
@@ -34,11 +34,11 @@ public class MySQLVerificationRepository implements VerificationRepository {
     }
 
     @Override
-    public boolean existsByUserIdWithStatusVerifiedAndTypeForgotPassword(UUID userId) {
+    public boolean existsByUserIdWithStatusVerifiedAndType(UUID userId, VerificationType verificationType) {
         return jpaRepository.existsByUserIdAndVerificationStatusAndVerificationType(
                 userId,
                 VerificationStatus.VERIFIED,
-                VerificationType.FORGOT_PASSWORD
+                verificationType
         );
     }
 }

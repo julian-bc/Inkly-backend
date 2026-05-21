@@ -1,4 +1,4 @@
-package top.inkly.verification_service.domain.models.enums;
+package top.inkly.shared.domain.models.verification;
 
 public enum VerificationType {
     FORGOT_PASSWORD,

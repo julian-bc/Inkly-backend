@@ -11,7 +11,7 @@ import top.inkly.verification_service.domain.exceptions.business.VerificationInv
 import top.inkly.verification_service.domain.exceptions.business.VerificationNotFoundException;
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
-import top.inkly.verification_service.domain.models.enums.VerificationType;
+import top.inkly.shared.domain.models.verification.VerificationType;
 import top.inkly.verification_service.domain.ports.output.queues.NotificationPublisherPort;
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
 import top.inkly.shared.domain.ports.output.user.UserConnectorPort;
@@ -90,8 +90,8 @@ public class VerificationService implements IVerificationService {
     }
 
     @Override
-    public boolean existsVerifyCodeForgottenPasswordByUserId(UUID userId) {
-        return repository.existsByUserIdWithStatusVerifiedAndTypeForgotPassword(userId);
+    public boolean existsVerifyCodeByUserIdAndVerificationType(UUID userId, VerificationType verificationType) {
+        return repository.existsByUserIdWithStatusVerifiedAndType(userId, verificationType);
     }
 
 }
