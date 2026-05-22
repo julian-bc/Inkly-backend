@@ -26,7 +26,6 @@ public class UserEntity {
     private String profileImageUrl;
     private String userName;
     private String email;
-    private String password;
     private Boolean emailVerified;
     private Boolean passwordVerified;
     private Boolean enable;

@@ -55,7 +55,7 @@ public class UserRestController implements IUserRestController {
         return mapper.toUserResponse(service.findUser(id));
     }
 
-    @GetMapping(value = "/users/username-email/{usernameOrEmail}")
+    @GetMapping(value = "/username-email/{usernameOrEmail}")
     public UserResponse getUserByUsernameOrEmail(@PathVariable String usernameOrEmail) {
         return mapper.toUserResponse(service.findUser(usernameOrEmail));
     }

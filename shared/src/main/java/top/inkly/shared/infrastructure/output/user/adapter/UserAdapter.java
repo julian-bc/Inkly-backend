@@ -29,6 +29,7 @@ public class UserAdapter implements UserConnectorPort {
         try {
             return userClient.getUserByUsernameOrEmail(usernameOrEmail);
         } catch (FeignException ex) {
+            System.out.println(ex.getMessage());
             throw new UserNotFoundException("Usuario con email/username no encontrado.");
         }
     }
