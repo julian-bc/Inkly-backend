@@ -2,6 +2,7 @@ package top.inkly.verification_service.infrastructure.output.database.repository
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import top.inkly.verification_service.domain.models.VerificationModel;
 import top.inkly.verification_service.domain.models.enums.VerificationStatus;
 import top.inkly.shared.domain.models.verification.VerificationType;
@@ -34,6 +35,12 @@ public class MySQLVerificationRepository implements VerificationRepository {
     }
 
     @Override
+    public void deleteByUserId(UUID userId) {
+        jpaRepository.deleteByUserId((userId));
+    }
+
+    @Override
+    @Transactional
     public boolean existsByUserIdWithStatusVerifiedAndType(UUID userId, VerificationType verificationType) {
         return jpaRepository.existsByUserIdAndVerificationStatusAndVerificationType(
                 userId,

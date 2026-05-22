@@ -2,6 +2,7 @@ package top.inkly.verification_service.application.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.inkly.shared.infrastructure.input.rest.dtos.user.UserResponse;
 import top.inkly.verification_service.application.service.IVerificationService;
 import static top.inkly.verification_service.application.service.utils.OTPNotificationBuilder.buildOtpNotification;
@@ -16,6 +17,7 @@ import top.inkly.verification_service.domain.ports.output.queues.NotificationPub
 import top.inkly.verification_service.domain.ports.output.repository.VerificationRepository;
 import top.inkly.shared.domain.ports.output.user.UserConnectorPort;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -26,7 +28,7 @@ public class VerificationService implements IVerificationService {
     private final NotificationPublisherPort notificationPublisher;
 
     @Override
-    public void saveVerificationRecord(String usernameOrEmail, VerificationType verificationType) {
+    public void saveVerificationRecord(String usernameOrEmail, VerificationType verificationType, String newEmail) {
         UserResponse userResponse = userConnectorPort.findUserByUsernameOrEmail(usernameOrEmail);
 
         VerificationModel verificationModel = new VerificationModel();
@@ -45,10 +47,11 @@ public class VerificationService implements IVerificationService {
        verificationModel.loadDates();
        verificationModel.setVerificationType(verificationType);
        verificationModel.setVerificationStatus(VerificationStatus.WAITING);
+       verificationModel.setUserId(userResponse.getUserId());
        repository.save(verificationModel);
 
        notificationPublisher.publishNotificationMessage(buildOtpNotification(
-               userResponse.getEmail(),
+               Objects.isNull(newEmail) ? userResponse.getEmail() : newEmail,
                userResponse.getUserName(),
                verificationModel.getCode()
        ));
@@ -90,8 +93,11 @@ public class VerificationService implements IVerificationService {
     }
 
     @Override
+    @Transactional
     public boolean existsVerifyCodeByUserIdAndVerificationType(UUID userId, VerificationType verificationType) {
-        return repository.existsByUserIdWithStatusVerifiedAndType(userId, verificationType);
+        boolean exists = repository.existsByUserIdWithStatusVerifiedAndType(userId, verificationType);
+        repository.deleteByUserId(userId);
+        return exists;
     }
 
 }

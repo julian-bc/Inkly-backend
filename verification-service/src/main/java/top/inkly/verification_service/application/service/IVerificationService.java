@@ -5,7 +5,7 @@ import top.inkly.shared.domain.models.verification.VerificationType;
 import java.util.UUID;
 
 public interface IVerificationService {
-    void saveVerificationRecord(String usernameOrEmail, VerificationType verificationType);
+    void saveVerificationRecord(String usernameOrEmail, VerificationType verificationType, String newEmail);
     void verifyCode(String usernameOrEmail, VerificationType verificationType, String code);
     boolean existsVerifyCodeByUserIdAndVerificationType(UUID userId, VerificationType verificationType);
 }

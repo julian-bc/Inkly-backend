@@ -65,6 +65,10 @@ public class SecurityConfig {
                                 "/verification-codes/available/{userId}"
                         ).permitAll()
                         .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/users/{usernameOrEmail}/update-password"
+                        ).permitAll()
+                        .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/story/create",
                                 "/api/chapter/create",
@@ -77,7 +81,6 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.PATCH,
                                 "/users/{id}/update-username",
-                                "/users/{usernameOrEmail}/update-password",
                                 "/users/{oldEmail}/update-email",
                                 "/users/{id}/toggle-status",
                                 "/users/{id}/update-image",

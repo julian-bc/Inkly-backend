@@ -25,8 +25,8 @@ public class VerificationRestController implements IVerificationRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createVerificationCode(@RequestBody VerificationRequest request) {
-        service.saveVerificationRecord(request.getUserNameOrEmail(), request.getVerificationType());
+    public void createVerificationCode(@RequestBody VerificationRequest request, @RequestParam(required = false) String newEmail) {
+        service.saveVerificationRecord(request.getUserNameOrEmail(), request.getVerificationType(), newEmail);
     }
 
     @PostMapping("/verify")

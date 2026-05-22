@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @FeignClient(name = "verification-service")
 public interface VerificationClient {
-    @GetMapping(value = "/available/{userId}")
+    @GetMapping(value = "/verification-codes/available/{userId}")
     boolean existsVerifyCodeByUserIdAndVerificationType(@PathVariable UUID userId, @RequestParam VerificationType verificationType);
 }

@@ -9,5 +9,6 @@ public interface VerificationRepository {
     VerificationModel findByUserIdAndVerificationType(UUID userId, VerificationType verificationType);
     void save(VerificationModel verificationModel);
     void deleteById(UUID verificationId);
+    void deleteByUserId(UUID userId);
     boolean existsByUserIdWithStatusVerifiedAndType(UUID userId, VerificationType verificationType);
 }
