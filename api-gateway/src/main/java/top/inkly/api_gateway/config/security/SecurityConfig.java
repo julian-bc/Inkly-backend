@@ -98,7 +98,7 @@ public class SecurityConfig {
                                 "/api/story/cover/{id}",
                                 "/api/chapter/{storyId}/chapter/{chapterId}",
                                 "/api/favorite",
-                                "/api/favorite/remove/{userId}/{storyId}",
+                                "/api/favorite/remove/{userId}/story/{storyId}",
                                 "/api/comment/{commentId}"
                         ).authenticated()
                         .requestMatchers(
@@ -107,7 +107,9 @@ public class SecurityConfig {
                                 "/api/story/last-modified/{userId}",
                                 "/api/chapter/my-chapters/{storyId}",
                                 "/api/favorite/search/{userId}",
+                                "/api/favorite/exists/{userId}/story/{storyId}",
                                 "/api/tag/search",
+                                "/api/rating/exists/{userId}/story/{storyId}",
                                 "/api/comment/search/story/{storyId}",
                                 "/api/comment/search/chapter/{chapterId}"
                         ).authenticated()
