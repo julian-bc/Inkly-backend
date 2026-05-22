@@ -56,12 +56,17 @@ public class SecurityConfig {
                                 HttpMethod.GET,
                                 "/users",
                                 "/users/{id}",
+                                "/users/username-email/{usernameOrEmail}",
                                 "/api/story/search",
                                 "/api/story/id/{storyId}",
                                 "/api/genre",
                                 "/api/chapter/{storyId}",
                                 "/api/tag/search",
                                 "/verification-codes/available/{userId}"
+                        ).permitAll()
+                        .requestMatchers(
+                                HttpMethod.PATCH,
+                                "/users/{usernameOrEmail}/update-password"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.POST,
@@ -76,7 +81,6 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.PATCH,
                                 "/users/{id}/update-username",
-                                "/users/{usernameOrEmail}/update-password",
                                 "/users/{oldEmail}/update-email",
                                 "/users/{id}/toggle-status",
                                 "/users/{id}/update-image",

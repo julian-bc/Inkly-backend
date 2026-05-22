@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import top.inkly.shared.domain.models.verification.VerificationType;
 import top.inkly.shared.domain.pagination.PageResponse;
 import top.inkly.shared.domain.pagination.PaginationRequest;
 import top.inkly.shared.domain.pagination.PaginationResult;
@@ -139,7 +140,7 @@ public class UserService implements IUserService {
         UserModel userSaved = this.findUser(usernameOrEmail);
         UUID userId = userSaved.getUserId();
 
-        if (!verificationConnectorPort.existsByUserIdAndVerificationStatus(userId)) {
+        if (!verificationConnectorPort.existsVerifyCodeByUserIdAndVerificationType(userId, VerificationType.FORGOT_PASSWORD)) {
             throw new NotFoundVerificationAvailable("No se encontró una verificación disponible con estado VERIFICADO para el usuario especificado.");
         }
 
@@ -155,7 +156,7 @@ public class UserService implements IUserService {
         UserModel userSaved = this.findUser(oldEmail);
         UUID userId = userSaved.getUserId();
 
-        if (!verificationConnectorPort.existsByUserIdAndVerificationStatus(userId)) {
+        if (!verificationConnectorPort.existsVerifyCodeByUserIdAndVerificationType(userId, VerificationType.CHANGE_EMAIL)) {
             throw new NotFoundVerificationAvailable("No se encontró una verificación disponible con estado VERIFICADO para el usuario especificado.");
         }
 
